@@ -1,9 +1,9 @@
 extends CharacterBody2D
 class_name PlayerController
 
-## M1 player movement prototype.
-## This script intentionally focuses only on movement, jumping, facing, and camera-ready control.
-## Combat, stats, inventory, and relic logic should stay outside this script in later milestones.
+## M1/M2 player prototype.
+## This script covers movement, jumping, facing, camera-ready control, and a minimal melee attack.
+## Stats, inventory, relic logic, combo chains, and skill systems should stay outside this script later.
 
 @export var move_speed: float = 260.0
 @export var acceleration: float = 1800.0
@@ -12,17 +12,34 @@ class_name PlayerController
 @export var gravity: float = 1600.0
 @export var max_fall_speed: float = 900.0
 
+@export_group("Combat")
+@export var attack_damage: int = 10
+@export var attack_cooldown: float = 0.35
+@export var attack_active_time: float = 0.12
+
 @onready var visual: ColorRect = $Visual
+@onready var attack_area: Area2D = $AttackArea
+@onready var attack_visual: ColorRect = $AttackArea/AttackVisual
 
 var facing_direction: int = 1
+var _attack_cooldown_timer: float = 0.0
+var _attack_active_timer: float = 0.0
+var _hit_targets: Array[Node] = []
+
+
+func _ready() -> void:
+	_set_attack_active(false)
 
 
 func _physics_process(delta: float) -> void:
+	_update_attack_timers(delta)
 	_apply_gravity(delta)
 	_handle_horizontal_movement(delta)
 	_handle_jump()
+	_handle_attack_input()
 	move_and_slide()
 	_update_facing_visual()
+	_update_attack_area_position()
 
 
 func _apply_gravity(delta: float) -> void:
@@ -47,11 +64,65 @@ func _handle_jump() -> void:
 		velocity.y = jump_velocity
 
 
+func _handle_attack_input() -> void:
+	if _is_attack_pressed() and _attack_cooldown_timer <= 0.0:
+		_start_attack()
+
+
+func _start_attack() -> void:
+	_attack_cooldown_timer = attack_cooldown
+	_attack_active_timer = attack_active_time
+	_hit_targets.clear()
+	_set_attack_active(true)
+	_apply_attack_hits()
+
+
+func _update_attack_timers(delta: float) -> void:
+	if _attack_cooldown_timer > 0.0:
+		_attack_cooldown_timer -= delta
+
+	if _attack_active_timer > 0.0:
+		_attack_active_timer -= delta
+		_apply_attack_hits()
+
+		if _attack_active_timer <= 0.0:
+			_set_attack_active(false)
+
+
+func _apply_attack_hits() -> void:
+	if attack_area == null:
+		return
+
+	for body in attack_area.get_overlapping_bodies():
+		if body in _hit_targets:
+			continue
+
+		if body.has_method("apply_damage"):
+			body.apply_damage(attack_damage, self)
+			_hit_targets.append(body)
+
+
+func _set_attack_active(is_active: bool) -> void:
+	if attack_area != null:
+		attack_area.monitoring = is_active
+		attack_area.monitorable = false
+
+	if attack_visual != null:
+		attack_visual.visible = is_active
+
+
+func _update_attack_area_position() -> void:
+	if attack_area == null:
+		return
+
+	attack_area.position.x = 34.0 * float(facing_direction)
+
+
 func _get_move_axis() -> float:
 	# Prefer project-specific gameplay actions.
 	var direction := Input.get_axis("move_left", "move_right")
 
-	# Keep fallback controls so the M1 prototype is immediately testable even before
+	# Keep fallback controls so the prototype is immediately testable even before
 	# the InputMap is edited in Godot's project settings.
 	if is_zero_approx(direction):
 		if Input.is_physical_key_pressed(KEY_A) or Input.is_key_pressed(KEY_LEFT):
@@ -71,6 +142,14 @@ func _is_jump_pressed() -> bool:
 		Input.is_action_just_pressed("jump")
 		or Input.is_action_just_pressed("ui_accept")
 		or Input.is_physical_key_pressed(KEY_SPACE)
+	)
+
+
+func _is_attack_pressed() -> bool:
+	return (
+		Input.is_action_just_pressed("attack")
+		or Input.is_physical_key_pressed(KEY_J)
+		or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 	)
 
 

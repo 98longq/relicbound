@@ -41,23 +41,26 @@
 
 目标：完成玩家基础移动和测试关卡。
 
+状态：原型已提交，等待用户本地运行验证
+
 任务：
 
-- [ ] 创建 `scenes/player/player.tscn`
-- [ ] 创建 `scripts/player/player_controller.gd`
-- [x] 创建 `scenes/levels/test_level.tscn` 占位场景
-- [ ] 实现左右移动
-- [ ] 实现跳跃和重力
-- [ ] 实现落地检测
-- [ ] 实现角色朝向
-- [ ] 实现摄像机跟随
-- [ ] 配置基础输入映射
+- [x] 创建 `scenes/player/player.tscn`
+- [x] 创建 `scripts/player/player_controller.gd`
+- [x] 创建并扩展 `scenes/levels/test_level.tscn`
+- [x] 实现左右移动
+- [x] 实现跳跃和重力
+- [x] 实现落地检测
+- [x] 实现角色朝向
+- [x] 实现摄像机跟随
+- [x] 添加基础输入兜底：A/D、方向键、Space、Godot UI action
+- [ ] 用户本地运行验证
 
 完成标准：
 
-- 打开项目后能进入测试关卡。
-- 玩家可以在平台上左右移动和跳跃。
-- 摄像机能跟随玩家。
+- [ ] 打开项目后能进入测试关卡。
+- [ ] 玩家可以在平台上左右移动和跳跃。
+- [ ] 摄像机能跟随玩家。
 
 ## M2：基础战斗闭环
 

@@ -30,16 +30,16 @@ color = Color(0.08, 0.07, 0.1, 1)
 [node name="ObjectiveLabel" type="Label" parent="HUD"]
 offset_left = 20.0
 offset_top = 20.0
-offset_right = 660.0
+offset_right = 760.0
 offset_bottom = 52.0
-text = "Stage goal: clear all enemies"
+text = "目标：击败全部敌人"
 
 [node name="ControlsLabel" type="Label" parent="HUD"]
 offset_left = 20.0
 offset_top = 52.0
-offset_right = 820.0
+offset_right = 980.0
 offset_bottom = 84.0
-text = "A/D move | Space jump | J hit | R restart"
+text = "操作：A/D 或方向键移动 | 空格跳跃 | J 或鼠标左键攻击 | R 重新开始"
 
 [node name="PlayerSpawn" type="Marker2D" parent="."]
 position = Vector2(160, 520)

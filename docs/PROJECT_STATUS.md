@@ -8,7 +8,11 @@ Playable Slice 001
 
 ## Current status
 
-The project now has a fixed demo stage for local Godot testing.
+The project now has:
+
+- a fixed demo stage for local Godot testing
+- a first generated art integration plan
+- a machine-readable manifest for generated art files
 
 ## Main files
 
@@ -23,6 +27,9 @@ The project now has a fixed demo stage for local Godot testing.
 - `scripts/enemies/enemy_base.gd`
 - `scripts/loot/pickup_item.gd`
 - `scripts/systems/level_controller.gd`
+- `assets/generated/README.md`
+- `data/generated_assets.json`
+- `docs/ASSET_INTEGRATION.md`
 
 ## Local test checklist
 
@@ -37,4 +44,11 @@ The project now has a fixed demo stage for local Godot testing.
 
 ## Next step
 
-Use local playtest feedback to fix errors and improve feel before expanding larger systems.
+Use local playtest feedback to fix errors and improve feel.
+
+In parallel, the next art pass should:
+
+1. Copy the generated PNG sheets into the target asset paths.
+2. Replace placeholder blocks with sprites.
+3. Build the first environment art pass.
+4. Continue updating project documentation.

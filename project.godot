@@ -1,0 +1,52 @@
+; Engine configuration file.
+; This file is the entry point for the Godot project.
+; It is intentionally minimal during M0 and will be expanded as scenes and systems are added.
+
+config_version=5
+
+[application]
+
+config/name="Relicbound"
+config/description="2D side-scrolling action roguelite about monster fighting, loot drops, and relic builds."
+config/version="0.0.1"
+run/main_scene="res://scenes/levels/test_level.tscn"
+config/features=PackedStringArray("4.3")
+config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[input]
+
+move_left={
+"deadzone": 0.5,
+"events": []
+}
+move_right={
+"deadzone": 0.5,
+"events": []
+}
+jump={
+"deadzone": 0.5,
+"events": []
+}
+attack={
+"deadzone": 0.5,
+"events": []
+}
+dash={
+"deadzone": 0.5,
+"events": []
+}
+interact={
+"deadzone": 0.5,
+"events": []
+}
+open_inventory={
+"deadzone": 0.5,
+"events": []
+}

@@ -6,7 +6,7 @@
 
 当前里程碑：**M0：项目规划与基础框架**
 
-当前状态：**进行中**
+当前状态：**基本完成，等待本地 Godot 打开验证**
 
 ## 项目基本信息
 
@@ -26,26 +26,38 @@
 - [x] 添加 README
 - [x] 添加 `.gitignore`
 - [x] 添加 `project.godot`
-- [x] 添加游戏设计文档
-- [x] 添加技术设计文档
-- [x] 添加开发路线图
-- [x] 添加项目状态文档
+- [x] 添加占位项目图标 `icon.svg`
+- [x] 添加测试关卡占位场景 `scenes/levels/test_level.tscn`
+- [x] 添加游戏设计文档 `docs/GAME_DESIGN.md`
+- [x] 添加技术设计文档 `docs/TECHNICAL_DESIGN.md`
+- [x] 添加开发路线图 `docs/ROADMAP.md`
+- [x] 添加项目状态文档 `docs/PROJECT_STATUS.md`
+- [x] 添加开发日志 `docs/DEVELOPMENT_LOG.md`
+- [x] 添加开发流程文档 `docs/WORKFLOW.md`
+- [x] 添加 AI 协作上下文 `docs/AI_CONTEXT.md`
+- [x] 添加内容制作规范 `docs/CONTENT_PIPELINE.md`
+- [x] 补齐基础目录结构
+- [x] 补齐场景目录：`scenes/player/`、`scenes/enemies/`、`scenes/levels/`、`scenes/ui/`、`scenes/items/`
+- [x] 补齐脚本目录：`scripts/player/`、`scripts/enemies/`、`scripts/combat/`、`scripts/loot/`、`scripts/inventory/`、`scripts/systems/`
+- [x] 补齐资源目录：`assets/sprites/`、`assets/audio/`、`assets/fonts/`、`assets/effects/`
+- [x] 补齐数据目录：`data/items/`、`data/enemies/`、`data/relics/`
 
 ## 正在进行
 
-- [ ] 补齐基础目录结构
-- [ ] 补齐开发流程文档
-- [ ] 补齐 AI 协作上下文
-- [ ] 补齐内容制作规范
+- [ ] 本地打开 Godot 4 项目进行验证
+- [ ] 开始 M1：玩家基础控制原型
 
 ## 下一步任务
 
-进入 M1 前需要完成：
+M1 首要任务：
 
-1. 确认仓库目录结构完整。
-2. 用 Godot 4 打开项目，确认 `project.godot` 可识别。
-3. 如果 Godot 提示缺少主场景，下一步创建 `scenes/levels/test_level.tscn`。
-4. 开始 M1：玩家基础控制原型。
+1. 用 Godot 4.x 克隆并打开项目，确认 `project.godot` 可识别。
+2. 检查 `scenes/levels/test_level.tscn` 是否可作为主场景打开。
+3. 创建 `scenes/player/player.tscn`。
+4. 创建 `scripts/player/player_controller.gd`。
+5. 实现玩家左右移动、跳跃、重力、落地检测。
+6. 添加摄像机跟随。
+7. 同步更新 `docs/PROJECT_STATUS.md` 和 `docs/DEVELOPMENT_LOG.md`。
 
 ## 当前阻塞点
 
@@ -55,6 +67,7 @@
 
 - 本地是否安装 Godot 4.x。
 - 克隆仓库后是否能打开项目。
+- 如果 Godot 版本不是 4.3，后续可调整 `project.godot` 的 features 配置。
 
 ## 开发同步规则
 
@@ -66,8 +79,9 @@
    - `docs/GAME_DESIGN.md`
    - `docs/TECHNICAL_DESIGN.md`
    - `docs/ROADMAP.md`
+   - `docs/AI_CONTEXT.md`
    - `README.md`
 
 ## 最近一次更新摘要
 
-2026-06-25：完成项目初始化规划，创建 README、Godot 基础工程文件和核心文档体系。
+2026-06-25：完成项目文档体系与基础框架初始化。仓库已包含 README、Godot 工程入口、核心设计文档、技术文档、路线图、项目状态、开发日志、AI 协作上下文、内容制作规范、基础目录结构、占位图标和测试关卡占位场景。下一步进入 M1 玩家基础控制原型。

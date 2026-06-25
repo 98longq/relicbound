@@ -4,9 +4,9 @@
 
 ## 当前阶段
 
-当前里程碑：**M0：项目规划与基础框架**
+当前里程碑：**M1：角色基础控制原型**
 
-当前状态：**基本完成，等待本地 Godot 打开验证**
+当前状态：**M1 原型已提交，等待用户本地 Godot 运行验证**
 
 ## 项目基本信息
 
@@ -16,9 +16,11 @@
 - 引擎：Godot 4.x
 - 语言：GDScript
 - 类型：2D 横板动作刷宝 Roguelite
-- 当前目标：建立长期可持续开发的文档体系和基础工程结构
+- 当前目标：验证玩家基础移动、跳跃、落地和摄像机跟随
 
 ## 已完成
+
+### M0：项目规划与基础框架
 
 - [x] 确定游戏方向：2D 横板动作 + 打怪掉宝 + Roguelite 构筑
 - [x] 确定项目名：Relicbound / 遗物之契
@@ -37,27 +39,40 @@
 - [x] 添加 AI 协作上下文 `docs/AI_CONTEXT.md`
 - [x] 添加内容制作规范 `docs/CONTENT_PIPELINE.md`
 - [x] 补齐基础目录结构
-- [x] 补齐场景目录：`scenes/player/`、`scenes/enemies/`、`scenes/levels/`、`scenes/ui/`、`scenes/items/`
-- [x] 补齐脚本目录：`scripts/player/`、`scripts/enemies/`、`scripts/combat/`、`scripts/loot/`、`scripts/inventory/`、`scripts/systems/`
-- [x] 补齐资源目录：`assets/sprites/`、`assets/audio/`、`assets/fonts/`、`assets/effects/`
-- [x] 补齐数据目录：`data/items/`、`data/enemies/`、`data/relics/`
+
+### M1：角色基础控制原型
+
+- [x] 创建玩家控制脚本 `scripts/player/player_controller.gd`
+- [x] 创建玩家场景 `scenes/player/player.tscn`
+- [x] 将测试关卡 `scenes/levels/test_level.tscn` 扩展为可运行原型场景
+- [x] 在测试关卡中加入玩家实例
+- [x] 在测试关卡中加入地面和平台碰撞
+- [x] 实现左右移动
+- [x] 实现跳跃和重力
+- [x] 实现落地检测
+- [x] 实现角色朝向反馈
+- [x] 添加玩家摄像机跟随
+- [x] 添加 A/D、方向键、Space、Godot UI action 的输入兜底
 
 ## 正在进行
 
-- [ ] 本地打开 Godot 4 项目进行验证
-- [ ] 开始 M1：玩家基础控制原型
+- [ ] 用户本地用 Godot 4.x 打开项目并运行主场景
+- [ ] 验证移动手感是否合适
+- [ ] 验证跳跃高度、重力和平台碰撞是否正常
+- [ ] 验证摄像机跟随是否正常
 
 ## 下一步任务
 
-M1 首要任务：
+M1 验证通过后，进入 M2：基础战斗闭环。
 
-1. 用 Godot 4.x 克隆并打开项目，确认 `project.godot` 可识别。
-2. 检查 `scenes/levels/test_level.tscn` 是否可作为主场景打开。
-3. 创建 `scenes/player/player.tscn`。
-4. 创建 `scripts/player/player_controller.gd`。
-5. 实现玩家左右移动、跳跃、重力、落地检测。
-6. 添加摄像机跟随。
-7. 同步更新 `docs/PROJECT_STATUS.md` 和 `docs/DEVELOPMENT_LOG.md`。
+M2 首要任务：
+
+1. 创建玩家攻击判定区域。
+2. 创建基础敌人场景。
+3. 创建敌人基础脚本。
+4. 实现敌人血量、受击和死亡。
+5. 在测试关卡中放置一个测试敌人。
+6. 同步更新 `docs/PROJECT_STATUS.md` 和 `docs/DEVELOPMENT_LOG.md`。
 
 ## 当前阻塞点
 
@@ -65,9 +80,11 @@ M1 首要任务：
 
 需要用户本地确认的事项：
 
-- 本地是否安装 Godot 4.x。
-- 克隆仓库后是否能打开项目。
-- 如果 Godot 版本不是 4.3，后续可调整 `project.godot` 的 features 配置。
+- 克隆仓库后是否能用 Godot 4.x 打开项目。
+- 主场景是否能正常运行。
+- 玩家是否能用 A/D 或方向键移动。
+- 玩家是否能用 Space 跳跃。
+- 摄像机是否跟随玩家。
 
 ## 开发同步规则
 
@@ -84,4 +101,4 @@ M1 首要任务：
 
 ## 最近一次更新摘要
 
-2026-06-25：完成项目文档体系与基础框架初始化。仓库已包含 README、Godot 工程入口、核心设计文档、技术文档、路线图、项目状态、开发日志、AI 协作上下文、内容制作规范、基础目录结构、占位图标和测试关卡占位场景。下一步进入 M1 玩家基础控制原型。
+2026-06-25：完成 M1 玩家基础控制原型。新增玩家控制脚本、玩家场景，并将测试关卡扩展为可运行平台测试场景。当前等待用户本地 Godot 运行验证，验证通过后进入 M2 基础战斗闭环。

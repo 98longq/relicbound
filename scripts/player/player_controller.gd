@@ -37,7 +37,7 @@ func _handle_horizontal_movement(delta: float) -> void:
 
 	if not is_zero_approx(direction):
 		velocity.x = move_toward(velocity.x, direction * move_speed, acceleration * delta)
-		facing_direction = signi(direction)
+		facing_direction = 1 if direction > 0.0 else -1
 	else:
 		velocity.x = move_toward(velocity.x, 0.0, friction * delta)
 
@@ -51,16 +51,27 @@ func _get_move_axis() -> float:
 	# Prefer project-specific gameplay actions.
 	var direction := Input.get_axis("move_left", "move_right")
 
-	# Keep a fallback to Godot's built-in UI actions so the prototype remains usable
-	# even if custom InputMap entries need to be reassigned in the editor.
+	# Keep fallback controls so the M1 prototype is immediately testable even before
+	# the InputMap is edited in Godot's project settings.
+	if is_zero_approx(direction):
+		if Input.is_physical_key_pressed(KEY_A) or Input.is_key_pressed(KEY_LEFT):
+			direction -= 1.0
+		if Input.is_physical_key_pressed(KEY_D) or Input.is_key_pressed(KEY_RIGHT):
+			direction += 1.0
+
+	# Godot's built-in UI actions are another useful fallback for keyboard/gamepad tests.
 	if is_zero_approx(direction):
 		direction = Input.get_axis("ui_left", "ui_right")
 
-	return direction
+	return clampf(direction, -1.0, 1.0)
 
 
 func _is_jump_pressed() -> bool:
-	return Input.is_action_just_pressed("jump") or Input.is_action_just_pressed("ui_accept")
+	return (
+		Input.is_action_just_pressed("jump")
+		or Input.is_action_just_pressed("ui_accept")
+		or Input.is_physical_key_pressed(KEY_SPACE)
+	)
 
 
 func _update_facing_visual() -> void:

@@ -4,35 +4,35 @@
   "assets": [
     {
       "id": "hero_sheet",
-      "target_path": "assets/generated/hero/hero_sheet.png",
-      "source_label": "战士像素动画表",
+      "path": "assets/generated/hero_sheet.png",
       "category": "character",
       "usage": ["player", "animation_reference"],
       "planned_states": ["idle", "run", "jump", "attack_light", "hurt", "death"]
     },
     {
       "id": "enemy_sheet",
-      "target_path": "assets/generated/enemies/enemy_sheet.png",
-      "source_label": "怪物角色设计图表",
+      "path": "assets/generated/enemy_sheet.png",
       "category": "enemy",
       "usage": ["common_enemies", "boss_reference"],
       "planned_units": ["crawler", "skeletal_warrior", "ruin_guardian"]
     },
     {
-      "id": "items_sheet",
-      "target_path": "assets/generated/items/items_sheet.png",
-      "source_label": "复古像素rpg物品一览",
+      "id": "item_sheet",
+      "path": "assets/generated/item_sheet.png",
       "category": "item",
       "usage": ["equipment_icons", "loot_icons", "pickup_icons"],
       "planned_items": ["sword", "axe", "spear", "bow", "staff", "shield", "gold", "potion", "amulet", "ring", "armor", "boots", "chest"]
     },
     {
       "id": "environment_sheet",
-      "target_path": "assets/generated/environment/environment_sheet.png",
-      "source_label": "遗迹之境游戏场景素材设计",
+      "path": "assets/generated/environment_sheet.png",
       "category": "environment",
       "usage": ["visual_direction", "tileset_reference", "prop_reference"],
       "planned_groups": ["ground_tiles", "platforms", "columns", "lights", "props", "foliage", "background_ruins"]
     }
+  ],
+  "notes": [
+    "These are source sheets, not final sliced sprites yet.",
+    "The next art pass should crop and split them into runtime-ready sprites."
   ]
 }

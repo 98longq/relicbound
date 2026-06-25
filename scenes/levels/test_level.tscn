@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=9 format=3]
 
-[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="1_player"]
-[ext_resource type="PackedScene" path="res://scenes/enemies/test_enemy.tscn" id="2_test_enemy"]
+[ext_resource type="Script" path="res://scripts/systems/level_controller.gd" id="1_level_controller"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/test_enemy.tscn" id="3_test_enemy"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/boss_ruin_guardian.tscn" id="4_boss_ruin_guardian"]
+[ext_resource type="PackedScene" path="res://scenes/items/pickup_health.tscn" id="5_pickup_health"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
-size = Vector2(1600, 80)
+size = Vector2(2200, 80)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_platform_small"]
 size = Vector2(240, 32)
@@ -13,36 +16,63 @@ size = Vector2(240, 32)
 size = Vector2(360, 32)
 
 [node name="TestLevel" type="Node2D"]
+script = ExtResource("1_level_controller")
 
 [node name="Background" type="ColorRect" parent="."]
 offset_left = -256.0
 offset_top = -256.0
-offset_right = 2048.0
+offset_right = 2400.0
 offset_bottom = 900.0
 color = Color(0.08, 0.07, 0.1, 1)
+
+[node name="ObjectiveLabel" type="Label" parent="."]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 660.0
+offset_bottom = 52.0
+text = "Objective: Defeat all monsters"
+
+[node name="ControlsLabel" type="Label" parent="."]
+offset_left = 20.0
+offset_top = 52.0
+offset_right = 780.0
+offset_bottom = 84.0
+text = "Move: A/D or Arrows | Jump: Space | Attack: J or Left Mouse | Restart after death/victory: R"
 
 [node name="PlayerSpawn" type="Marker2D" parent="."]
 position = Vector2(160, 520)
 
-[node name="Player" parent="." instance=ExtResource("1_player")]
+[node name="Player" parent="." instance=ExtResource("2_player")]
 position = Vector2(160, 520)
 
-[node name="EnemySpawn" type="Marker2D" parent="."]
-position = Vector2(620, 592)
+[node name="EnemyA" parent="." instance=ExtResource("3_test_enemy")]
+position = Vector2(520, 592)
 
-[node name="TestEnemy" parent="." instance=ExtResource("2_test_enemy")]
-position = Vector2(620, 592)
+[node name="EnemyB" parent="." instance=ExtResource("3_test_enemy")]
+position = Vector2(880, 592)
+
+[node name="EnemyC" parent="." instance=ExtResource("3_test_enemy")]
+position = Vector2(1190, 592)
+
+[node name="BossRuinGuardian" parent="." instance=ExtResource("4_boss_ruin_guardian")]
+position = Vector2(1640, 592)
+
+[node name="PickupHealthA" parent="." instance=ExtResource("5_pickup_health")]
+position = Vector2(720, 580)
+
+[node name="PickupHealthB" parent="." instance=ExtResource("5_pickup_health")]
+position = Vector2(1380, 580)
 
 [node name="Ground" type="StaticBody2D" parent="."]
-position = Vector2(800, 640)
+position = Vector2(1100, 640)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
 shape = SubResource("RectangleShape2D_ground")
 
 [node name="Visual" type="ColorRect" parent="Ground"]
-offset_left = -800.0
+offset_left = -1100.0
 offset_top = -40.0
-offset_right = 800.0
+offset_right = 1100.0
 offset_bottom = 40.0
 color = Color(0.24, 0.2, 0.27, 1)
 

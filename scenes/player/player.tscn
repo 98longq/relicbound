@@ -1,7 +1,11 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="1_player_controller"]
-[ext_resource type="Texture2D" path="res://assets/art/player/player_knight.svg" id="2_player_art"]
+[ext_resource type="Texture2D" path="res://assets/generated/hero_sheet.png" id="2_player_sheet"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_player_idle"]
+atlas = ExtResource("2_player_sheet")
+region = Rect2(48, 48, 104, 126)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
 size = Vector2(36, 52)
@@ -18,12 +22,12 @@ offset_top = -52.0
 offset_right = 18.0
 offset_bottom = 0.0
 pivot_offset = Vector2(18, 26)
-color = Color(0.9, 0.67, 0.28, 0.08)
+color = Color(0.9, 0.67, 0.28, 0.03)
 
 [node name="Art" type="Sprite2D" parent="Visual"]
-position = Vector2(18, 26)
-scale = Vector2(0.56, 0.56)
-texture = ExtResource("2_player_art")
+position = Vector2(18, 24)
+scale = Vector2(0.5, 0.5)
+texture = SubResource("AtlasTexture_player_idle")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -26)

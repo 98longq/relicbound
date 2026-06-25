@@ -161,6 +161,10 @@ func _apply_attack_hits() -> void:
 		return
 
 	for body in attack_area.get_overlapping_bodies():
+		if body == self:
+			continue
+		if not body.is_in_group("enemies"):
+			continue
 		if body in _hit_targets:
 			continue
 
@@ -206,9 +210,9 @@ func _update_status_label() -> void:
 
 	var state_text := ""
 	if is_dead:
-		state_text = " | DEAD - Press R"
+		state_text = " | 已死亡 - 按 R 重开"
 
-	status_label.text = "HP: %s/%s | Gold: %s%s" % [current_health, max_health, gold, state_text]
+	status_label.text = "生命: %s/%s | 金币: %s%s" % [current_health, max_health, gold, state_text]
 
 
 func _get_move_axis() -> float:

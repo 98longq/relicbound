@@ -5,7 +5,7 @@ class_name LevelController
 ## Tracks enemy clear condition, displays the current objective, and supports restart after victory.
 ## Later this can become a proper run/room state machine.
 
-@onready var objective_label: Label = $ObjectiveLabel
+@onready var objective_label: Label = $HUD/ObjectiveLabel
 
 var is_victory: bool = false
 

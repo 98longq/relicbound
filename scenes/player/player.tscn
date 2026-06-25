@@ -23,6 +23,14 @@ color = Color(0.9, 0.67, 0.28, 1)
 position = Vector2(0, -26)
 shape = SubResource("RectangleShape2D_player")
 
+[node name="StatusLabel" type="Label" parent="."]
+offset_left = -80.0
+offset_top = -92.0
+offset_right = 80.0
+offset_bottom = -68.0
+horizontal_alignment = 1
+text = "HP: 100/100 | Gold: 0"
+
 [node name="AttackArea" type="Area2D" parent="."]
 position = Vector2(34, -28)
 monitoring = false

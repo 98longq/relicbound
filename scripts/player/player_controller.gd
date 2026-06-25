@@ -1,10 +1,11 @@
 extends CharacterBody2D
 class_name PlayerController
 
-## M1/M2 player prototype.
-## This script covers movement, jumping, facing, camera-ready control, and a minimal melee attack.
-## Stats, inventory, relic logic, combo chains, and skill systems should stay outside this script later.
+## M1-M3 player prototype.
+## Covers movement, jumping, facing, minimal melee attack, health, death, and pickups.
+## Inventory, relic logic, combo chains, and skill systems should stay outside this script later.
 
+@export_group("Movement")
 @export var move_speed: float = 260.0
 @export var acceleration: float = 1800.0
 @export var friction: float = 2200.0
@@ -17,21 +18,44 @@ class_name PlayerController
 @export var attack_cooldown: float = 0.35
 @export var attack_active_time: float = 0.12
 
+@export_group("Stats")
+@export var max_health: int = 100
+
 @onready var visual: ColorRect = $Visual
 @onready var attack_area: Area2D = $AttackArea
 @onready var attack_visual: ColorRect = $AttackArea/AttackVisual
+@onready var status_label: Label = $StatusLabel
 
+var current_health: int
+var gold: int = 0
 var facing_direction: int = 1
+var is_dead: bool = false
+
 var _attack_cooldown_timer: float = 0.0
 var _attack_active_timer: float = 0.0
 var _hit_targets: Array[Node] = []
+var _base_color: Color = Color(0.9, 0.67, 0.28, 1.0)
+var _hurt_flash_timer: float = 0.0
 
 
 func _ready() -> void:
+	current_health = max_health
+	add_to_group("player")
 	_set_attack_active(false)
+
+	if visual != null:
+		_base_color = visual.color
+
+	_update_status_label()
 
 
 func _physics_process(delta: float) -> void:
+	_update_hurt_flash(delta)
+
+	if is_dead:
+		_handle_dead_restart_input()
+		return
+
 	_update_attack_timers(delta)
 	_apply_gravity(delta)
 	_handle_horizontal_movement(delta)
@@ -40,6 +64,49 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	_update_facing_visual()
 	_update_attack_area_position()
+
+
+func apply_damage(amount: int, source: Node = null) -> void:
+	if is_dead:
+		return
+
+	current_health = maxi(current_health - amount, 0)
+	_start_hurt_feedback()
+	_update_status_label()
+
+	if current_health <= 0:
+		die(source)
+
+
+func collect_pickup(pickup_type: String, amount: int) -> void:
+	match pickup_type:
+		"gold":
+			gold += amount
+		"health":
+			current_health = mini(current_health + amount, max_health)
+		_:
+			pass
+
+	_update_status_label()
+
+
+func die(source: Node = null) -> void:
+	if is_dead:
+		return
+
+	is_dead = true
+	velocity = Vector2.ZERO
+	_set_attack_active(false)
+
+	if visual != null:
+		visual.color = Color(0.18, 0.18, 0.18, 1.0)
+
+	_update_status_label()
+
+
+func _handle_dead_restart_input() -> void:
+	if Input.is_physical_key_pressed(KEY_R):
+		get_tree().reload_current_scene()
 
 
 func _apply_gravity(delta: float) -> void:
@@ -116,6 +183,32 @@ func _update_attack_area_position() -> void:
 		return
 
 	attack_area.position.x = 34.0 * float(facing_direction)
+
+
+func _start_hurt_feedback() -> void:
+	_hurt_flash_timer = 0.08
+	if visual != null:
+		visual.color = Color(1.0, 1.0, 1.0, 1.0)
+
+
+func _update_hurt_flash(delta: float) -> void:
+	if _hurt_flash_timer <= 0.0:
+		return
+
+	_hurt_flash_timer -= delta
+	if _hurt_flash_timer <= 0.0 and visual != null and not is_dead:
+		visual.color = _base_color
+
+
+func _update_status_label() -> void:
+	if status_label == null:
+		return
+
+	var state_text := ""
+	if is_dead:
+		state_text = " | DEAD - Press R"
+
+	status_label.text = "HP: %s/%s | Gold: %s%s" % [current_health, max_health, gold, state_text]
 
 
 func _get_move_axis() -> float:

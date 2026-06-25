@@ -58,7 +58,7 @@ func _is_player_dead() -> bool:
 func _trigger_victory() -> void:
 	is_victory = true
 	if objective_label != null:
-		objective_label.text = "VICTORY! All monsters defeated. Press R to restart."
+		objective_label.text = "胜利！所有敌人已击败，按 R 重新开始。"
 
 
 func _update_objective_label(remaining_enemies: int = -1) -> void:
@@ -66,10 +66,10 @@ func _update_objective_label(remaining_enemies: int = -1) -> void:
 		return
 
 	if _is_player_dead():
-		objective_label.text = "DEFEATED. Press R to restart."
+		objective_label.text = "失败！按 R 重新开始。"
 		return
 
 	if remaining_enemies < 0:
 		remaining_enemies = _count_alive_enemies()
 
-	objective_label.text = "Objective: Defeat all monsters | Remaining: %s" % remaining_enemies
+	objective_label.text = "目标：击败全部敌人 | 剩余：%s" % remaining_enemies

@@ -16,7 +16,7 @@ shader_parameter/saturation_cutoff = 0.18
 shader_parameter/alpha_cutoff = 0.05
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_boss"]
-size = Vector2(138, 118)
+size = Vector2(166, 132)
 
 [node name="BossRuinGuardian" type="CharacterBody2D"]
 collision_layer = 4
@@ -25,10 +25,11 @@ script = ExtResource("1_enemy_base")
 max_health = 100
 move_speed = 55.0
 detection_range = 900.0
-attack_range = 72.0
-stop_distance = 58.0
+attack_range = 86.0
+stop_distance = 68.0
 attack_damage = 16
 attack_cooldown = 1.1
+attack_lunge_distance = 20.0
 loot_scene = ExtResource("2_pickup_gold")
 loot_drop_chance = 1.0
 
@@ -46,13 +47,13 @@ scale = Vector2(0.34, 0.34)
 texture = SubResource("AtlasTexture_boss_idle")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -58)
+position = Vector2(0, -66)
 shape = SubResource("RectangleShape2D_boss")
 
 [node name="HealthLabel" type="Label" parent="."]
-offset_left = -70.0
-offset_top = -136.0
-offset_right = 70.0
-offset_bottom = -112.0
+offset_left = -78.0
+offset_top = -148.0
+offset_right = 78.0
+offset_bottom = -124.0
 horizontal_alignment = 1
 text = "BOSS 100/100"

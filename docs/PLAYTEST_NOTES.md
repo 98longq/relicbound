@@ -6,13 +6,13 @@ Updated: 2026-06-25
 
 Playable Slice 001
 
-## Latest combat tuning pass
+## Latest feedback and UI pass
 
-- Shortened the player melee reach slightly again.
-- Reduced common enemy and boss hurtbox volume a little so hits do not feel too generous.
-- Increased common enemy attack range and stop distance so enemies start attacks during player kiting instead of only chasing.
-- Increased boss attack range and stop distance so the boss starts attacking from a clearer distance.
-- Kept enemy attack lunge/tint feedback visible.
+- Added floating damage numbers when enemies and the boss take damage.
+- Added boss grouping and a top-center boss HP panel for the ruin guardian.
+- Added a result panel for victory and defeat states.
+- Added player invulnerability frames after taking damage, with blinking feedback.
+- Victory and defeat now both show a clear overlay and support R restart.
 - Player fall death remains enabled for off-map recovery.
 
 ## Collision layer plan
@@ -29,14 +29,13 @@ Playable Slice 001
 - Check movement with A/D or arrow keys.
 - Check jump with Space.
 - Check attack with J or left mouse.
-- Confirm player melee reach is slightly shorter than the previous build.
-- Confirm hits still connect around visible enemy body contact.
-- Confirm common enemies begin attack motion more often when the player kites near them.
-- Confirm the boss begins attack motion from a readable distance.
-- Confirm falling below the level causes death and allows R restart.
+- Confirm damage numbers appear when hitting enemies.
+- Confirm the boss HP panel appears and updates during the boss fight.
+- Confirm player briefly blinks and ignores rapid repeated damage after being hit.
+- Confirm victory shows a result panel and R restarts.
+- Confirm defeat or fall death shows a result panel and R restarts.
 - Confirm pickups still work.
 - Check the Chinese HUD text and fixed player status panel.
-- Check R restart.
 
 ## Next development rule
 

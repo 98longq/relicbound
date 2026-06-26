@@ -23,6 +23,7 @@ func _ready() -> void:
 	if player_health_bar == null:
 		_create_player_health_bar()
 
+	_apply_health_bar_styles()
 	_set_result_visible(false)
 	_update_objective_label()
 	_update_player_info_label()
@@ -55,15 +56,57 @@ func _create_player_health_bar() -> void:
 
 	player_health_bar = ProgressBar.new()
 	player_health_bar.name = "PlayerHealthBar"
-	player_health_bar.offset_left = 330.0
-	player_health_bar.offset_top = 56.0
-	player_health_bar.offset_right = 650.0
-	player_health_bar.offset_bottom = 74.0
+	player_health_bar.offset_left = 24.0
+	player_health_bar.offset_top = 76.0
+	player_health_bar.offset_right = 300.0
+	player_health_bar.offset_bottom = 94.0
 	player_health_bar.min_value = 0.0
 	player_health_bar.max_value = 100.0
 	player_health_bar.value = 100.0
 	player_health_bar.show_percentage = false
 	hud.add_child(player_health_bar)
+
+
+func _apply_health_bar_styles() -> void:
+	_set_progress_bar_style(
+		player_health_bar,
+		Color(0.86, 0.08, 0.08, 1.0),
+		Color(0.08, 0.015, 0.018, 0.95),
+		Color(0.95, 0.38, 0.26, 1.0)
+	)
+	_set_progress_bar_style(
+		boss_health_bar,
+		Color(0.78, 0.04, 0.055, 1.0),
+		Color(0.075, 0.012, 0.02, 0.95),
+		Color(0.95, 0.30, 0.22, 1.0)
+	)
+
+
+func _set_progress_bar_style(bar: ProgressBar, fill_color: Color, background_color: Color, border_color: Color) -> void:
+	if bar == null:
+		return
+
+	var background := StyleBoxFlat.new()
+	background.bg_color = background_color
+	background.border_color = border_color
+	background.border_width_left = 1
+	background.border_width_top = 1
+	background.border_width_right = 1
+	background.border_width_bottom = 1
+	background.corner_radius_top_left = 4
+	background.corner_radius_top_right = 4
+	background.corner_radius_bottom_left = 4
+	background.corner_radius_bottom_right = 4
+
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = fill_color
+	fill.corner_radius_top_left = 4
+	fill.corner_radius_top_right = 4
+	fill.corner_radius_bottom_left = 4
+	fill.corner_radius_bottom_right = 4
+
+	bar.add_theme_stylebox_override("background", background)
+	bar.add_theme_stylebox_override("fill", fill)
 
 
 func _count_alive_enemies() -> int:

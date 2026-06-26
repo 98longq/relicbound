@@ -3,7 +3,7 @@ class_name EnemyBase
 
 ## Enemy prototype.
 ## Covers health, receiving damage, gravity, hit feedback, death, simple chasing,
-## contact-range attacks, one loot drop scene, visible attack feedback, and damage numbers.
+## contact-range attacks, one loot drop scene, visible attack feedback, damage numbers, and boss phase changes.
 
 const DAMAGE_NUMBER_SCENE := preload("res://scenes/ui/damage_number.tscn")
 
@@ -27,6 +27,13 @@ const DAMAGE_NUMBER_SCENE := preload("res://scenes/ui/damage_number.tscn")
 @export var attack_lunge_distance: float = 28.0
 @export var attack_squash_scale: Vector2 = Vector2(1.28, 0.84)
 
+@export_group("Boss Phase")
+@export_range(0.05, 0.95, 0.05) var phase_two_health_ratio: float = 0.5
+@export var phase_two_move_multiplier: float = 1.25
+@export var phase_two_damage_bonus: int = 4
+@export var phase_two_attack_cooldown_multiplier: float = 0.78
+@export var phase_two_lunge_multiplier: float = 1.35
+
 @export_group("Loot")
 @export var loot_scene: PackedScene
 @export_range(0.0, 1.0, 0.05) var loot_drop_chance: float = 1.0
@@ -38,6 +45,7 @@ const DAMAGE_NUMBER_SCENE := preload("res://scenes/ui/damage_number.tscn")
 var current_health: int
 var is_dead: bool = false
 var facing_direction: int = -1
+var is_phase_two: bool = false
 
 var _target: Node2D
 var _attack_cooldown_timer: float = 0.0
@@ -88,6 +96,7 @@ func apply_damage(amount: int, source: Node = null) -> void:
 
 	current_health = maxi(current_health - amount, 0)
 	_spawn_damage_number(amount)
+	_try_enter_phase_two()
 	_start_hit_feedback()
 	_update_health_label()
 
@@ -152,6 +161,28 @@ func _try_attack_target() -> void:
 	if _target.has_method("apply_damage"):
 		_target.apply_damage(attack_damage, self)
 		_attack_cooldown_timer = attack_cooldown
+
+
+func _try_enter_phase_two() -> void:
+	if not is_boss or is_phase_two:
+		return
+
+	if current_health <= 0:
+		return
+
+	var health_ratio := float(current_health) / float(max_health)
+	if health_ratio > phase_two_health_ratio:
+		return
+
+	is_phase_two = true
+	move_speed *= phase_two_move_multiplier
+	attack_damage += phase_two_damage_bonus
+	attack_cooldown = maxf(0.45, attack_cooldown * phase_two_attack_cooldown_multiplier)
+	attack_lunge_distance *= phase_two_lunge_multiplier
+	_base_art_modulate = Color(1.0, 0.62, 0.62, 1.0)
+	_hit_flash_timer = maxf(_hit_flash_timer, 0.28)
+	if art_sprite != null:
+		art_sprite.modulate = Color(1.0, 0.32, 0.32, 1.0)
 
 
 func _drop_loot() -> void:
@@ -247,4 +278,7 @@ func _update_health_label() -> void:
 	if health_label == null:
 		return
 
-	health_label.text = "%s/%s" % [current_health, max_health]
+	if is_boss and is_phase_two:
+		health_label.text = "BOSS 2 %s/%s" % [current_health, max_health]
+	else:
+		health_label.text = "%s/%s" % [current_health, max_health]

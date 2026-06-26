@@ -6,14 +6,20 @@ Updated: 2026-06-25
 
 Playable Slice 001
 
-## Latest collision tuning pass
+## Latest collision correction pass
 
-- Separated collision layers into world, player, enemy, and platform groups.
-- Player now collides with ground and platforms only.
-- Enemies and boss now collide with ground only, so they do not get stuck under platforms.
-- Player attacks still detect enemies through the AttackArea enemy mask.
-- Pickups now detect the player layer directly.
-- Platform art remains tiled instead of stretched.
+- Corrected player collision settings to `layer 2` and `mask 9`.
+- Corrected common enemy and boss collision settings to `layer 4` and `mask 1`.
+- Corrected the player attack area to detect enemy `layer 4`.
+- Confirmed pickups are configured to detect player `layer 2`.
+- Confirmed platforms use `layer 8`, while the player mask includes that layer.
+
+## Collision layer plan
+
+- World / ground: layer 1
+- Player: layer 2
+- Enemies / boss: layer 4
+- Platforms: layer 8
 
 ## Local test checklist
 
@@ -21,7 +27,7 @@ Playable Slice 001
 - Run the main scene.
 - Check movement with A/D or arrow keys.
 - Check jump with Space.
-- Confirm each platform can be reached.
+- Confirm each platform can be reached and stood on.
 - Confirm the boss no longer gets stuck under platforms.
 - Confirm the player cannot push the boss or common enemies.
 - Confirm the player can pass through enemy bodies.

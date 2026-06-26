@@ -71,6 +71,48 @@ offset_right = 990.0
 offset_bottom = 112.0
 text = "操作：A/D 或方向键移动 | 空格跳跃 | J 或鼠标左键攻击 | R 重新开始"
 
+[node name="BossPanel" type="ColorRect" parent="HUD"]
+offset_left = 270.0
+offset_top = 128.0
+offset_right = 760.0
+offset_bottom = 184.0
+color = Color(0.08, 0.035, 0.045, 0.72)
+
+[node name="BossLabel" type="Label" parent="HUD"]
+offset_left = 286.0
+offset_top = 134.0
+offset_right = 744.0
+offset_bottom = 158.0
+horizontal_alignment = 1
+text = "遗迹守卫：100/100"
+
+[node name="BossHealthBar" type="ProgressBar" parent="HUD"]
+offset_left = 292.0
+offset_top = 160.0
+offset_right = 738.0
+offset_bottom = 178.0
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="ResultPanel" type="ColorRect" parent="HUD"]
+visible = false
+offset_left = 275.0
+offset_top = 225.0
+offset_right = 745.0
+offset_bottom = 385.0
+color = Color(0.015, 0.012, 0.018, 0.84)
+
+[node name="ResultLabel" type="Label" parent="HUD"]
+visible = false
+offset_left = 300.0
+offset_top = 250.0
+offset_right = 720.0
+offset_bottom = 360.0
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "胜利\n按 R 重新开始"
+
 [node name="PlayerSpawn" type="Marker2D" parent="."]
 position = Vector2(160, 520)
 

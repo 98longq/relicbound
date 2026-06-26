@@ -8,9 +8,9 @@ class_name PlayerController
 @export var move_speed: float = 260.0
 @export var acceleration: float = 1800.0
 @export var friction: float = 2200.0
-@export var jump_velocity: float = -520.0
-@export var gravity: float = 1600.0
-@export var max_fall_speed: float = 900.0
+@export var jump_velocity: float = -760.0
+@export var gravity: float = 1700.0
+@export var max_fall_speed: float = 950.0
 
 @export_group("Combat")
 @export var attack_damage: int = 10

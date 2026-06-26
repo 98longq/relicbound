@@ -6,14 +6,14 @@ Updated: 2026-06-25
 
 Playable Slice 001
 
-## Latest cleanup pass
+## Latest visual enrichment pass
 
-- Removed temporary test art files.
-- Removed redundant `.gitkeep` files from folders that already contain real files.
-- Updated generated art manifest paths to match the uploaded PNG files.
-- Updated generated art folder notes.
-- Connected the existing boss art resource to the boss scene.
-- Localized the default player status label.
+- Added generated sheet background removal shader.
+- Replaced the visible attack debug box with player attack pose switching.
+- Added basic player sprite states for idle, run, jump, and attack.
+- Applied sheet background cleanup to player, common enemy, boss, gold pickup, and health pickup visuals.
+- Added a fixed HUD panel with objective, player HP, gold, and control hints.
+- Added first-pass environment art overlays for the ground and platforms.
 
 ## Local test checklist
 
@@ -22,8 +22,11 @@ Playable Slice 001
 - Check movement with A/D or arrow keys.
 - Check jump with Space.
 - Check attack with J or left mouse.
+- Confirm the yellow attack debug box is no longer visible.
+- Confirm character state art changes while moving, jumping, and attacking.
 - Check pickups.
-- Check the Chinese HUD text.
+- Check the Chinese HUD text and fixed player status panel.
+- Check that generated sheet backgrounds are mostly removed from sprites.
 - Check R restart.
 
 ## Next development rule

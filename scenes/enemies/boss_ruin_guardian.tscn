@@ -16,7 +16,7 @@ shader_parameter/saturation_cutoff = 0.18
 shader_parameter/alpha_cutoff = 0.05
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_boss"]
-size = Vector2(76, 92)
+size = Vector2(138, 118)
 
 [node name="BossRuinGuardian" type="CharacterBody2D"]
 collision_layer = 4
@@ -46,13 +46,13 @@ scale = Vector2(0.34, 0.34)
 texture = SubResource("AtlasTexture_boss_idle")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -46)
+position = Vector2(0, -58)
 shape = SubResource("RectangleShape2D_boss")
 
 [node name="HealthLabel" type="Label" parent="."]
-offset_left = -56.0
-offset_top = -124.0
-offset_right = 56.0
-offset_bottom = -100.0
+offset_left = -70.0
+offset_top = -136.0
+offset_right = 70.0
+offset_bottom = -112.0
 horizontal_alignment = 1
 text = "BOSS 100/100"

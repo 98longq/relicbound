@@ -6,14 +6,12 @@ Updated: 2026-06-25
 
 Playable Slice 001
 
-## Latest gameplay progression pass
+## Latest HUD tuning pass
 
-- Added a boss phase-two enraged state at low health.
-- In phase two, the boss becomes faster, hits harder, attacks more often, and has stronger lunge feedback.
-- Boss HUD now changes the boss name to `遗迹守卫·狂暴` during phase two.
-- Added a dynamic player HP bar to the HUD in addition to the existing text status.
-- Victory and defeat result panels now include collected gold and remaining HP.
-- Existing damage numbers, player invulnerability frames, boss HP panel, and R restart remain active.
+- Styled player and boss HP bars with red fills, dark backgrounds, borders, and rounded corners.
+- Moved the player HP bar away from the center HUD area to a compact left-side position below the control/status panel.
+- Kept the boss HP bar centered near the top as the main boss encounter indicator.
+- Boss phase-two HUD name, damage numbers, invulnerability frames, result panels, and R restart remain active.
 
 ## Collision layer plan
 
@@ -29,12 +27,11 @@ Playable Slice 001
 - Check movement with A/D or arrow keys.
 - Check jump with Space.
 - Check attack with J or left mouse.
-- Confirm the player HP bar updates when taking damage or healing.
-- Confirm damage numbers appear when hitting enemies.
-- Confirm boss HP panel updates during the boss fight.
+- Confirm player HP bar is red and positioned neatly on the left side.
+- Confirm boss HP bar is red and updates during the boss fight.
+- Confirm player HP bar updates when taking damage or healing.
 - Confirm boss enters phase two at low health and the HUD name changes to `遗迹守卫·狂暴`.
-- Confirm phase-two boss attacks feel more dangerous but still readable.
-- Confirm victory/defeat panel shows gold and remaining HP.
+- Confirm victory/defeat panel still shows gold and remaining HP.
 - Confirm R restarts after victory, defeat, or fall death.
 
 ## Next development rule

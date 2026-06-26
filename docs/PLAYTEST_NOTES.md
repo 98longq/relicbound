@@ -6,14 +6,14 @@ Updated: 2026-06-25
 
 Playable Slice 001
 
-## Latest combat feel tuning pass
+## Latest enrichment pass
 
-- Extended the player melee attack area forward and slightly upward.
-- Increased the attack hitbox size from a close-range box to a wider sword-like reach.
-- Tuned common enemy hurtbox size to better match the visible body.
-- Tuned boss hurtbox size so attacks connect before the player visually overlaps the boss body.
-- Changed enemy hit feedback to flash the sprite itself instead of flashing the invisible ColorRect container.
-- Removed the white rectangular flash that appeared when enemies were hit.
+- Slightly shortened the player melee reach while keeping the attack area forward and readable.
+- Increased common enemy and boss hurtbox volume so hits feel like they connect on visible body contact.
+- Added enemy attack motion feedback: enemies now briefly lunge and tint when they attack.
+- Expanded the test level to a longer stage with more ground, more platform sections, two additional common enemies, and one extra health pickup.
+- Moved the boss farther to the right so the level has a clearer end encounter.
+- Extended the player camera right limit to support the longer map.
 
 ## Collision layer plan
 
@@ -30,10 +30,11 @@ Playable Slice 001
 - Check jump with Space.
 - Confirm each platform can be reached and stood on.
 - Confirm the player cannot push the boss or common enemies.
-- Confirm the player can pass through enemy bodies.
 - Check attack with J or left mouse.
-- Confirm melee hits connect before the player overlaps the boss sprite.
+- Confirm melee hits feel like they connect on visible enemy contact.
 - Confirm common enemies and boss no longer flash a white rectangle when hit.
+- Confirm enemies show a visible attack lunge when attacking.
+- Confirm the longer map scrolls correctly to the right.
 - Check pickups still work.
 - Check the Chinese HUD text and fixed player status panel.
 - Check R restart.

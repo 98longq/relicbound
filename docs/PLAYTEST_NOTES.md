@@ -6,13 +6,14 @@ Updated: 2026-06-25
 
 Playable Slice 001
 
-## Latest collision correction pass
+## Latest combat feel tuning pass
 
-- Corrected player collision settings to `layer 2` and `mask 9`.
-- Corrected common enemy and boss collision settings to `layer 4` and `mask 1`.
-- Corrected the player attack area to detect enemy `layer 4`.
-- Confirmed pickups are configured to detect player `layer 2`.
-- Confirmed platforms use `layer 8`, while the player mask includes that layer.
+- Extended the player melee attack area forward and slightly upward.
+- Increased the attack hitbox size from a close-range box to a wider sword-like reach.
+- Tuned common enemy hurtbox size to better match the visible body.
+- Tuned boss hurtbox size so attacks connect before the player visually overlaps the boss body.
+- Changed enemy hit feedback to flash the sprite itself instead of flashing the invisible ColorRect container.
+- Removed the white rectangular flash that appeared when enemies were hit.
 
 ## Collision layer plan
 
@@ -28,11 +29,12 @@ Playable Slice 001
 - Check movement with A/D or arrow keys.
 - Check jump with Space.
 - Confirm each platform can be reached and stood on.
-- Confirm the boss no longer gets stuck under platforms.
 - Confirm the player cannot push the boss or common enemies.
 - Confirm the player can pass through enemy bodies.
 - Check attack with J or left mouse.
-- Check pickups still work after the collision layer change.
+- Confirm melee hits connect before the player overlaps the boss sprite.
+- Confirm common enemies and boss no longer flash a white rectangle when hit.
+- Check pickups still work.
 - Check the Chinese HUD text and fixed player status panel.
 - Check R restart.
 

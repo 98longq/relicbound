@@ -2,7 +2,7 @@ extends CharacterBody2D
 class_name PlayerController
 
 ## Player prototype controller.
-## Handles movement, jumping, facing, light attack, health, death, pickups, and basic sprite state switching.
+## Handles movement, jumping, facing, light attack, health, death, pickups, fall death, and basic sprite state switching.
 
 @export_group("Movement")
 @export var move_speed: float = 260.0
@@ -11,12 +11,13 @@ class_name PlayerController
 @export var jump_velocity: float = -760.0
 @export var gravity: float = 1700.0
 @export var max_fall_speed: float = 950.0
+@export var fall_death_y: float = 940.0
 
 @export_group("Combat")
 @export var attack_damage: int = 10
 @export var attack_cooldown: float = 0.35
 @export var attack_active_time: float = 0.18
-@export var attack_offset_x: float = 72.0
+@export var attack_offset_x: float = 52.0
 @export var attack_offset_y: float = -34.0
 
 @export_group("Stats")
@@ -38,6 +39,7 @@ var current_health: int
 var gold: int = 0
 var facing_direction: int = 1
 var is_dead: bool = false
+var death_reason: String = ""
 
 var _attack_cooldown_timer: float = 0.0
 var _attack_active_timer: float = 0.0
@@ -74,6 +76,7 @@ func _physics_process(delta: float) -> void:
 	_handle_jump()
 	_handle_attack_input()
 	move_and_slide()
+	_check_fall_death()
 	_update_facing_visual()
 	_update_attack_area_position()
 	_update_art_state()
@@ -110,6 +113,9 @@ func die(source: Node = null) -> void:
 	is_dead = true
 	velocity = Vector2.ZERO
 	_set_attack_active(false)
+
+	if death_reason.is_empty() and source != null:
+		death_reason = "被击败"
 
 	if art_sprite != null:
 		art_sprite.modulate = Color(0.35, 0.35, 0.35, 1.0)
@@ -204,6 +210,15 @@ func _update_attack_area_position() -> void:
 	attack_area.position.y = attack_offset_y
 
 
+func _check_fall_death() -> void:
+	if global_position.y <= fall_death_y:
+		return
+
+	death_reason = "坠落"
+	current_health = 0
+	die(null)
+
+
 func _start_hurt_feedback() -> void:
 	_hurt_flash_timer = 0.08
 	if art_sprite != null:
@@ -225,7 +240,10 @@ func _update_status_label() -> void:
 
 	var state_text := ""
 	if is_dead:
-		state_text = " | 已死亡 - 按 R 重开"
+		if death_reason.is_empty():
+			state_text = " | 已死亡 - 按 R 重开"
+		else:
+			state_text = " | %s - 按 R 重开" % death_reason
 
 	status_label.text = "生命: %s/%s | 金币: %s%s" % [current_health, max_health, gold, state_text]
 

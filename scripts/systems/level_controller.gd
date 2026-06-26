@@ -55,10 +55,10 @@ func _create_player_health_bar() -> void:
 
 	player_health_bar = ProgressBar.new()
 	player_health_bar.name = "PlayerHealthBar"
-	player_health_bar.offset_left = 24.0
-	player_health_bar.offset_top = 76.0
-	player_health_bar.offset_right = 310.0
-	player_health_bar.offset_bottom = 94.0
+	player_health_bar.offset_left = 330.0
+	player_health_bar.offset_top = 56.0
+	player_health_bar.offset_right = 650.0
+	player_health_bar.offset_bottom = 74.0
 	player_health_bar.min_value = 0.0
 	player_health_bar.max_value = 100.0
 	player_health_bar.value = 100.0
@@ -202,7 +202,14 @@ func _build_result_summary(reason: String) -> String:
 
 func _show_result(title: String, body: String) -> void:
 	_set_result_visible(true)
+
+	if result_panel != null:
+		result_panel.offset_top = 210.0
+		result_panel.offset_bottom = 420.0
+
 	if result_label != null:
+		result_label.offset_top = 232.0
+		result_label.offset_bottom = 395.0
 		result_label.text = "%s\n%s" % [title, body]
 
 

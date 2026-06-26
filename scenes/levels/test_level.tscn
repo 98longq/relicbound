@@ -1,10 +1,26 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Script" path="res://scripts/systems/level_controller.gd" id="1_level_controller"]
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_player"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/test_enemy.tscn" id="3_test_enemy"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/boss_ruin_guardian.tscn" id="4_boss_ruin_guardian"]
 [ext_resource type="PackedScene" path="res://scenes/items/pickup_health.tscn" id="5_pickup_health"]
+[ext_resource type="Texture2D" path="res://assets/generated/environment_sheet.png" id="6_environment_sheet"]
+[ext_resource type="Shader" path="res://assets/shaders/remove_sheet_bg.gdshader" id="7_remove_bg"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ground_art"]
+atlas = ExtResource("6_environment_sheet")
+region = Rect2(20, 135, 150, 95)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_platform_art"]
+atlas = ExtResource("6_environment_sheet")
+region = Rect2(20, 275, 150, 80)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_environment_bg"]
+shader = ExtResource("7_remove_bg")
+shader_parameter/brightness_cutoff = 0.82
+shader_parameter/saturation_cutoff = 0.18
+shader_parameter/alpha_cutoff = 0.05
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
 size = Vector2(2200, 80)
@@ -23,22 +39,36 @@ offset_left = -256.0
 offset_top = -256.0
 offset_right = 2400.0
 offset_bottom = 900.0
-color = Color(0.08, 0.07, 0.1, 1)
+color = Color(0.06, 0.055, 0.075, 1)
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
+[node name="Panel" type="ColorRect" parent="HUD"]
+offset_left = 14.0
+offset_top = 14.0
+offset_right = 1010.0
+offset_bottom = 118.0
+color = Color(0.02, 0.018, 0.026, 0.62)
+
 [node name="ObjectiveLabel" type="Label" parent="HUD"]
-offset_left = 20.0
-offset_top = 20.0
+offset_left = 24.0
+offset_top = 22.0
 offset_right = 760.0
 offset_bottom = 52.0
 text = "目标：击败全部敌人"
 
-[node name="ControlsLabel" type="Label" parent="HUD"]
-offset_left = 20.0
+[node name="PlayerInfoLabel" type="Label" parent="HUD"]
+offset_left = 24.0
 offset_top = 52.0
-offset_right = 980.0
-offset_bottom = 84.0
+offset_right = 760.0
+offset_bottom = 82.0
+text = "生命：100/100 | 金币：0"
+
+[node name="ControlsLabel" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 82.0
+offset_right = 990.0
+offset_bottom = 112.0
 text = "操作：A/D 或方向键移动 | 空格跳跃 | J 或鼠标左键攻击 | R 重新开始"
 
 [node name="PlayerSpawn" type="Marker2D" parent="."]
@@ -76,7 +106,13 @@ offset_left = -1100.0
 offset_top = -40.0
 offset_right = 1100.0
 offset_bottom = 40.0
-color = Color(0.24, 0.2, 0.27, 1)
+color = Color(0.18, 0.15, 0.2, 1)
+
+[node name="Art" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(0, -18)
+scale = Vector2(14.8, 0.82)
+texture = SubResource("AtlasTexture_ground_art")
 
 [node name="PlatformA" type="StaticBody2D" parent="."]
 position = Vector2(480, 500)
@@ -89,7 +125,13 @@ offset_left = -120.0
 offset_top = -16.0
 offset_right = 120.0
 offset_bottom = 16.0
-color = Color(0.35, 0.29, 0.38, 1)
+color = Color(0.24, 0.19, 0.28, 1)
+
+[node name="Art" type="Sprite2D" parent="PlatformA"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(0, -4)
+scale = Vector2(1.75, 0.45)
+texture = SubResource("AtlasTexture_platform_art")
 
 [node name="PlatformB" type="StaticBody2D" parent="."]
 position = Vector2(850, 420)
@@ -102,7 +144,13 @@ offset_left = -180.0
 offset_top = -16.0
 offset_right = 180.0
 offset_bottom = 16.0
-color = Color(0.35, 0.29, 0.38, 1)
+color = Color(0.24, 0.19, 0.28, 1)
+
+[node name="Art" type="Sprite2D" parent="PlatformB"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(0, -4)
+scale = Vector2(2.65, 0.45)
+texture = SubResource("AtlasTexture_platform_art")
 
 [node name="PlatformC" type="StaticBody2D" parent="."]
 position = Vector2(1230, 520)
@@ -115,4 +163,10 @@ offset_left = -120.0
 offset_top = -16.0
 offset_right = 120.0
 offset_bottom = 16.0
-color = Color(0.35, 0.29, 0.38, 1)
+color = Color(0.24, 0.19, 0.28, 1)
+
+[node name="Art" type="Sprite2D" parent="PlatformC"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(0, -4)
+scale = Vector2(1.75, 0.45)
+texture = SubResource("AtlasTexture_platform_art")

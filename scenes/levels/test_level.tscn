@@ -108,14 +108,98 @@ offset_right = 1100.0
 offset_bottom = 40.0
 color = Color(0.18, 0.15, 0.2, 1)
 
-[node name="Art" type="Sprite2D" parent="Ground"]
+[node name="ArtTile01" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(-1050, -18)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile02" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(-900, -18)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile03" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(-750, -18)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile04" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(-600, -18)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile05" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(-450, -18)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile06" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(-300, -18)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile07" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(-150, -18)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile08" type="Sprite2D" parent="Ground"]
 material = SubResource("ShaderMaterial_environment_bg")
 position = Vector2(0, -18)
-scale = Vector2(14.8, 0.82)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile09" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(150, -18)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile10" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(300, -18)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile11" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(450, -18)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile12" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(600, -18)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile13" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(750, -18)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile14" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(900, -18)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile15" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(1050, -18)
+scale = Vector2(1, 0.7)
 texture = SubResource("AtlasTexture_ground_art")
 
 [node name="PlatformA" type="StaticBody2D" parent="."]
-position = Vector2(480, 500)
+position = Vector2(480, 485)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformA"]
 shape = SubResource("RectangleShape2D_platform_small")
@@ -127,14 +211,20 @@ offset_right = 120.0
 offset_bottom = 16.0
 color = Color(0.24, 0.19, 0.28, 1)
 
-[node name="Art" type="Sprite2D" parent="PlatformA"]
+[node name="ArtLeft" type="Sprite2D" parent="PlatformA"]
 material = SubResource("ShaderMaterial_environment_bg")
-position = Vector2(0, -4)
-scale = Vector2(1.75, 0.45)
+position = Vector2(-75, -4)
+scale = Vector2(1, 0.42)
+texture = SubResource("AtlasTexture_platform_art")
+
+[node name="ArtRight" type="Sprite2D" parent="PlatformA"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(75, -4)
+scale = Vector2(1, 0.42)
 texture = SubResource("AtlasTexture_platform_art")
 
 [node name="PlatformB" type="StaticBody2D" parent="."]
-position = Vector2(850, 420)
+position = Vector2(850, 410)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformB"]
 shape = SubResource("RectangleShape2D_platform_large")
@@ -146,14 +236,26 @@ offset_right = 180.0
 offset_bottom = 16.0
 color = Color(0.24, 0.19, 0.28, 1)
 
-[node name="Art" type="Sprite2D" parent="PlatformB"]
+[node name="ArtLeft" type="Sprite2D" parent="PlatformB"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(-120, -4)
+scale = Vector2(1, 0.42)
+texture = SubResource("AtlasTexture_platform_art")
+
+[node name="ArtCenter" type="Sprite2D" parent="PlatformB"]
 material = SubResource("ShaderMaterial_environment_bg")
 position = Vector2(0, -4)
-scale = Vector2(2.65, 0.45)
+scale = Vector2(1, 0.42)
+texture = SubResource("AtlasTexture_platform_art")
+
+[node name="ArtRight" type="Sprite2D" parent="PlatformB"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(120, -4)
+scale = Vector2(1, 0.42)
 texture = SubResource("AtlasTexture_platform_art")
 
 [node name="PlatformC" type="StaticBody2D" parent="."]
-position = Vector2(1230, 520)
+position = Vector2(1230, 495)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformC"]
 shape = SubResource("RectangleShape2D_platform_small")
@@ -165,8 +267,14 @@ offset_right = 120.0
 offset_bottom = 16.0
 color = Color(0.24, 0.19, 0.28, 1)
 
-[node name="Art" type="Sprite2D" parent="PlatformC"]
+[node name="ArtLeft" type="Sprite2D" parent="PlatformC"]
 material = SubResource("ShaderMaterial_environment_bg")
-position = Vector2(0, -4)
-scale = Vector2(1.75, 0.45)
+position = Vector2(-75, -4)
+scale = Vector2(1, 0.42)
+texture = SubResource("AtlasTexture_platform_art")
+
+[node name="ArtRight" type="Sprite2D" parent="PlatformC"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(75, -4)
+scale = Vector2(1, 0.42)
 texture = SubResource("AtlasTexture_platform_art")

@@ -2,7 +2,8 @@ extends CharacterBody2D
 class_name PlayerController
 
 ## Player prototype controller.
-## Handles movement, jumping, facing, light attack, health, death, pickups, fall death, and basic sprite state switching.
+## Handles movement, jumping, facing, light attack, health, death, pickups, fall death,
+## invulnerability frames, and basic sprite state switching.
 
 @export_group("Movement")
 @export var move_speed: float = 260.0
@@ -19,6 +20,7 @@ class_name PlayerController
 @export var attack_active_time: float = 0.18
 @export var attack_offset_x: float = 52.0
 @export var attack_offset_y: float = -34.0
+@export var invulnerability_time: float = 0.75
 
 @export_group("Stats")
 @export var max_health: int = 100
@@ -46,6 +48,7 @@ var _attack_active_timer: float = 0.0
 var _hit_targets: Array[Node] = []
 var _base_art_modulate: Color = Color.WHITE
 var _hurt_flash_timer: float = 0.0
+var _invulnerability_timer: float = 0.0
 
 
 func _ready() -> void:
@@ -65,6 +68,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	_update_hurt_flash(delta)
+	_update_invulnerability(delta)
 
 	if is_dead:
 		_handle_dead_restart_input()
@@ -86,8 +90,13 @@ func apply_damage(amount: int, source: Node = null) -> void:
 	if is_dead:
 		return
 
+	if _invulnerability_timer > 0.0 and amount > 0:
+		return
+
 	current_health = maxi(current_health - amount, 0)
 	_start_hurt_feedback()
+	if current_health > 0:
+		_start_invulnerability()
 	_update_status_label()
 
 	if current_health <= 0:
@@ -118,6 +127,7 @@ func die(source: Node = null) -> void:
 		death_reason = "被击败"
 
 	if art_sprite != null:
+		art_sprite.visible = true
 		art_sprite.modulate = Color(0.35, 0.35, 0.35, 1.0)
 
 	_update_status_label()
@@ -232,6 +242,25 @@ func _update_hurt_flash(delta: float) -> void:
 	_hurt_flash_timer -= delta
 	if _hurt_flash_timer <= 0.0 and art_sprite != null and not is_dead:
 		art_sprite.modulate = _base_art_modulate
+
+
+func _start_invulnerability() -> void:
+	_invulnerability_timer = invulnerability_time
+
+
+func _update_invulnerability(delta: float) -> void:
+	if art_sprite == null:
+		return
+
+	if _invulnerability_timer <= 0.0:
+		art_sprite.visible = true
+		return
+
+	_invulnerability_timer -= delta
+	art_sprite.visible = int(_invulnerability_timer * 18.0) % 2 == 0
+
+	if _invulnerability_timer <= 0.0:
+		art_sprite.visible = true
 
 
 func _update_status_label() -> void:

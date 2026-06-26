@@ -16,6 +16,8 @@ class_name PlayerController
 @export var attack_damage: int = 10
 @export var attack_cooldown: float = 0.35
 @export var attack_active_time: float = 0.18
+@export var attack_offset_x: float = 72.0
+@export var attack_offset_y: float = -34.0
 
 @export_group("Stats")
 @export var max_health: int = 100
@@ -190,8 +192,6 @@ func _set_attack_active(is_active: bool) -> void:
 		attack_area.monitoring = is_active
 		attack_area.monitorable = false
 
-	# The old yellow rectangle was only a debug range display.
-	# Keep the hitbox active, but hide the debug rectangle so attacks read as character actions.
 	if attack_visual != null:
 		attack_visual.visible = false
 
@@ -200,7 +200,8 @@ func _update_attack_area_position() -> void:
 	if attack_area == null:
 		return
 
-	attack_area.position.x = 34.0 * float(facing_direction)
+	attack_area.position.x = attack_offset_x * float(facing_direction)
+	attack_area.position.y = attack_offset_y
 
 
 func _start_hurt_feedback() -> void:

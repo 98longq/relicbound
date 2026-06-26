@@ -6,13 +6,14 @@ Updated: 2026-06-25
 
 Playable Slice 001
 
-## Latest tuning pass
+## Latest collision tuning pass
 
-- Replaced horizontally stretched environment art with repeated tile sprites to reduce ground blur.
-- Increased player jump height so platforms are reachable.
-- Adjusted platform positions for better reachability.
-- Changed player and enemy collision layers so the player can pass through enemy bodies.
-- Kept attack detection on enemy bodies through the player AttackArea collision mask.
+- Separated collision layers into world, player, enemy, and platform groups.
+- Player now collides with ground and platforms only.
+- Enemies and boss now collide with ground only, so they do not get stuck under platforms.
+- Player attacks still detect enemies through the AttackArea enemy mask.
+- Pickups now detect the player layer directly.
+- Platform art remains tiled instead of stretched.
 
 ## Local test checklist
 
@@ -21,11 +22,12 @@ Playable Slice 001
 - Check movement with A/D or arrow keys.
 - Check jump with Space.
 - Confirm each platform can be reached.
-- Confirm the boss no longer physically blocks player movement.
+- Confirm the boss no longer gets stuck under platforms.
+- Confirm the player cannot push the boss or common enemies.
+- Confirm the player can pass through enemy bodies.
 - Check attack with J or left mouse.
-- Check pickups.
+- Check pickups still work after the collision layer change.
 - Check the Chinese HUD text and fixed player status panel.
-- Check that ground and platform art is less blurry than before.
 - Check R restart.
 
 ## Next development rule

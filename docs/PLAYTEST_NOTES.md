@@ -6,11 +6,13 @@ Updated: 2026-06-25
 
 Playable Slice 001
 
-## Latest HUD tuning pass
+## Latest compact HUD tuning pass
 
-- Styled player and boss HP bars with red fills, dark backgrounds, borders, and rounded corners.
-- Moved the player HP bar away from the center HUD area to a compact left-side position below the control/status panel.
-- Kept the boss HP bar centered near the top as the main boss encounter indicator.
+- Recentered the boss HP panel and bar using the active viewport width instead of fixed left-biased coordinates.
+- Kept player and boss HP bars styled with red fills, dark backgrounds, borders, and rounded corners.
+- Moved the player HP text into the player HP bar itself.
+- Merged gold display into the first objective line so the HUD uses fewer separate text rows.
+- Left the controls hint below the compact player HP bar.
 - Boss phase-two HUD name, damage numbers, invulnerability frames, result panels, and R restart remain active.
 
 ## Collision layer plan
@@ -27,9 +29,11 @@ Playable Slice 001
 - Check movement with A/D or arrow keys.
 - Check jump with Space.
 - Check attack with J or left mouse.
-- Confirm player HP bar is red and positioned neatly on the left side.
-- Confirm boss HP bar is red and updates during the boss fight.
+- Confirm the boss HP panel is centered at the top of the screen.
+- Confirm player HP text is inside the red HP bar.
+- Confirm gold is shown in the first objective line.
 - Confirm player HP bar updates when taking damage or healing.
+- Confirm boss HP bar updates during the boss fight.
 - Confirm boss enters phase two at low health and the HUD name changes to `遗迹守卫·狂暴`.
 - Confirm victory/defeat panel still shows gold and remaining HP.
 - Confirm R restarts after victory, defeat, or fall death.

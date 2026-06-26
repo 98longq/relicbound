@@ -3,12 +3,15 @@ class_name EnemyBase
 
 ## Enemy prototype.
 ## Covers health, receiving damage, gravity, hit feedback, death, simple chasing,
-## contact-range attacks, one loot drop scene, and visible attack motion feedback.
+## contact-range attacks, one loot drop scene, visible attack feedback, and damage numbers.
+
+const DAMAGE_NUMBER_SCENE := preload("res://scenes/ui/damage_number.tscn")
 
 @export_group("Stats")
 @export var max_health: int = 30
 @export var gravity: float = 1600.0
 @export var max_fall_speed: float = 900.0
+@export var is_boss: bool = false
 
 @export_group("AI")
 @export var move_speed: float = 90.0
@@ -48,6 +51,8 @@ var _base_art_scale: Vector2 = Vector2.ONE
 func _ready() -> void:
 	current_health = max_health
 	add_to_group("enemies")
+	if is_boss:
+		add_to_group("bosses")
 
 	# Visual is kept as an invisible container. Hit feedback should affect only
 	# the sprite, otherwise a white rectangle flashes around the enemy.
@@ -82,6 +87,7 @@ func apply_damage(amount: int, source: Node = null) -> void:
 		return
 
 	current_health = maxi(current_health - amount, 0)
+	_spawn_damage_number(amount)
 	_start_hit_feedback()
 	_update_health_label()
 
@@ -161,6 +167,22 @@ func _drop_loot() -> void:
 
 	get_parent().add_child(loot)
 	loot.global_position = global_position + Vector2(0, -18)
+
+
+func _spawn_damage_number(amount: int) -> void:
+	var damage_number := DAMAGE_NUMBER_SCENE.instantiate()
+	if damage_number == null:
+		return
+
+	var parent := get_parent()
+	if parent == null:
+		return
+
+	parent.add_child(damage_number)
+	var height_offset := -96.0 if is_boss else -52.0
+	damage_number.global_position = global_position + Vector2(randf_range(-18.0, 18.0), height_offset)
+	if damage_number.has_method("setup"):
+		damage_number.setup(amount, is_boss)
 
 
 func _apply_gravity(delta: float) -> void:

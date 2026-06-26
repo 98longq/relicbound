@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/enemies/enemy_base.gd" id="1_enemy_base"]
 [ext_resource type="PackedScene" path="res://scenes/items/pickup_gold.tscn" id="2_pickup_gold"]
 [ext_resource type="Texture2D" path="res://assets/generated/enemy_sheet.png" id="3_enemy_sheet"]
 [ext_resource type="Shader" path="res://assets/shaders/remove_sheet_bg.gdshader" id="4_remove_bg"]
+[ext_resource type="PackedScene" path="res://scenes/items/pickup_health.tscn" id="5_pickup_health"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_crawler_idle"]
 atlas = ExtResource("3_enemy_sheet")
@@ -32,6 +33,8 @@ attack_feedback_time = 0.34
 attack_lunge_distance = 30.0
 loot_scene = ExtResource("2_pickup_gold")
 loot_drop_chance = 1.0
+bonus_loot_scene = ExtResource("5_pickup_health")
+bonus_loot_drop_chance = 0.25
 
 [node name="Visual" type="ColorRect" parent="."]
 offset_left = -20.0

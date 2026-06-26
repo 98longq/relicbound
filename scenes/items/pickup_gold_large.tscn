@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/loot/pickup_item.gd" id="1_pickup_item"]
+[ext_resource type="Texture2D" path="res://assets/generated/item_sheet.png" id="2_item_sheet"]
+[ext_resource type="Shader" path="res://assets/shaders/remove_sheet_bg.gdshader" id="3_remove_bg"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gold_pickup"]
+atlas = ExtResource("2_item_sheet")
+region = Rect2(105, 620, 240, 190)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gold_bg"]
+shader = ExtResource("3_remove_bg")
+shader_parameter/brightness_cutoff = 0.82
+shader_parameter/saturation_cutoff = 0.18
+shader_parameter/alpha_cutoff = 0.05
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gold"]
+radius = 18.0
+
+[node name="PickupGoldLarge" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_pickup_item")
+pickup_type = "gold"
+amount = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_gold")
+
+[node name="Visual" type="ColorRect" parent="."]
+offset_left = -12.0
+offset_top = -12.0
+offset_right = 12.0
+offset_bottom = 12.0
+color = Color(1, 1, 1, 0)
+
+[node name="Art" type="Sprite2D" parent="Visual"]
+material = SubResource("ShaderMaterial_gold_bg")
+position = Vector2(12, 10)
+scale = Vector2(0.16, 0.16)
+texture = SubResource("AtlasTexture_gold_pickup")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -30.0
+offset_top = -38.0
+offset_right = 30.0
+offset_bottom = -14.0
+horizontal_alignment = 1
+text = "+10 G"

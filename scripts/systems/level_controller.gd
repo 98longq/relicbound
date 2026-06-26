@@ -2,19 +2,22 @@ extends Node2D
 class_name LevelController
 
 ## Minimal playable level controller.
-## Tracks enemy clear condition, displays the current objective, and supports restart after victory.
-## Later this can become a proper run/room state machine.
+## Tracks enemy clear condition, displays objective/player status, and supports restart after victory.
 
 @onready var objective_label: Label = $HUD/ObjectiveLabel
+@onready var player_info_label: Label = $HUD/PlayerInfoLabel
 
 var is_victory: bool = false
 
 
 func _ready() -> void:
 	_update_objective_label()
+	_update_player_info_label()
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
+	_update_player_info_label()
+
 	if is_victory:
 		if Input.is_physical_key_pressed(KEY_R):
 			get_tree().reload_current_scene()
@@ -46,12 +49,19 @@ func _count_alive_enemies() -> int:
 	return count
 
 
-func _is_player_dead() -> bool:
+func _get_player() -> Node:
 	var players := get_tree().get_nodes_in_group("player")
 	if players.is_empty():
+		return null
+
+	return players[0]
+
+
+func _is_player_dead() -> bool:
+	var player := _get_player()
+	if player == null:
 		return false
 
-	var player := players[0]
 	return player.get("is_dead") == true
 
 
@@ -73,3 +83,18 @@ func _update_objective_label(remaining_enemies: int = -1) -> void:
 		remaining_enemies = _count_alive_enemies()
 
 	objective_label.text = "目标：击败全部敌人 | 剩余：%s" % remaining_enemies
+
+
+func _update_player_info_label() -> void:
+	if player_info_label == null:
+		return
+
+	var player := _get_player()
+	if player == null:
+		player_info_label.text = "生命：-- | 金币：--"
+		return
+
+	var current_health = player.get("current_health")
+	var max_health = player.get("max_health")
+	var gold = player.get("gold")
+	player_info_label.text = "生命：%s/%s | 金币：%s" % [current_health, max_health, gold]

@@ -1,10 +1,9 @@
 extends CharacterBody2D
 class_name EnemyBase
 
-## M3 enemy prototype.
-## Covers health, receiving damage, basic gravity, hit feedback, death, simple chasing,
-## simple contact-range attacks, and one loot drop scene.
-## Advanced AI, navigation, elite modifiers, and loot tables belong to later milestones.
+## Enemy prototype.
+## Covers health, receiving damage, gravity, hit feedback, death, simple chasing,
+## contact-range attacks, and one loot drop scene.
 
 @export_group("Stats")
 @export var max_health: int = 30
@@ -27,6 +26,7 @@ class_name EnemyBase
 @export_range(0.0, 1.0, 0.05) var loot_drop_chance: float = 1.0
 
 @onready var visual: ColorRect = $Visual
+@onready var art_sprite: Sprite2D = get_node_or_null("Visual/Art") as Sprite2D
 @onready var health_label: Label = $HealthLabel
 
 var current_health: int
@@ -36,15 +36,20 @@ var facing_direction: int = -1
 var _target: Node2D
 var _attack_cooldown_timer: float = 0.0
 var _hit_flash_timer: float = 0.0
-var _base_color: Color = Color(0.7, 0.18, 0.22, 1.0)
+var _base_art_modulate: Color = Color.WHITE
 
 
 func _ready() -> void:
 	current_health = max_health
 	add_to_group("enemies")
 
+	# Visual is kept as an invisible container. Hit feedback should affect only
+	# the sprite, otherwise a white rectangle flashes around the enemy.
 	if visual != null:
-		_base_color = visual.color
+		visual.color = Color(1.0, 1.0, 1.0, 0.0)
+
+	if art_sprite != null:
+		_base_art_modulate = art_sprite.modulate
 
 	_update_health_label()
 
@@ -156,8 +161,8 @@ func _apply_gravity(delta: float) -> void:
 
 func _start_hit_feedback() -> void:
 	_hit_flash_timer = hit_flash_time
-	if visual != null:
-		visual.color = Color(1.0, 1.0, 1.0, 1.0)
+	if art_sprite != null:
+		art_sprite.modulate = Color(1.0, 0.55, 0.55, 1.0)
 
 
 func _update_hit_flash(delta: float) -> void:
@@ -165,8 +170,8 @@ func _update_hit_flash(delta: float) -> void:
 		return
 
 	_hit_flash_timer -= delta
-	if _hit_flash_timer <= 0.0 and visual != null:
-		visual.color = _base_color
+	if _hit_flash_timer <= 0.0 and art_sprite != null:
+		art_sprite.modulate = _base_art_modulate
 
 
 func _update_facing_visual() -> void:

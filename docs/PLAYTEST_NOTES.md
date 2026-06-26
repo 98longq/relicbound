@@ -6,14 +6,14 @@ Updated: 2026-06-25
 
 Playable Slice 001
 
-## Latest feedback and UI pass
+## Latest gameplay progression pass
 
-- Added floating damage numbers when enemies and the boss take damage.
-- Added boss grouping and a top-center boss HP panel for the ruin guardian.
-- Added a result panel for victory and defeat states.
-- Added player invulnerability frames after taking damage, with blinking feedback.
-- Victory and defeat now both show a clear overlay and support R restart.
-- Player fall death remains enabled for off-map recovery.
+- Added a boss phase-two enraged state at low health.
+- In phase two, the boss becomes faster, hits harder, attacks more often, and has stronger lunge feedback.
+- Boss HUD now changes the boss name to `遗迹守卫·狂暴` during phase two.
+- Added a dynamic player HP bar to the HUD in addition to the existing text status.
+- Victory and defeat result panels now include collected gold and remaining HP.
+- Existing damage numbers, player invulnerability frames, boss HP panel, and R restart remain active.
 
 ## Collision layer plan
 
@@ -29,13 +29,13 @@ Playable Slice 001
 - Check movement with A/D or arrow keys.
 - Check jump with Space.
 - Check attack with J or left mouse.
+- Confirm the player HP bar updates when taking damage or healing.
 - Confirm damage numbers appear when hitting enemies.
-- Confirm the boss HP panel appears and updates during the boss fight.
-- Confirm player briefly blinks and ignores rapid repeated damage after being hit.
-- Confirm victory shows a result panel and R restarts.
-- Confirm defeat or fall death shows a result panel and R restarts.
-- Confirm pickups still work.
-- Check the Chinese HUD text and fixed player status panel.
+- Confirm boss HP panel updates during the boss fight.
+- Confirm boss enters phase two at low health and the HUD name changes to `遗迹守卫·狂暴`.
+- Confirm phase-two boss attacks feel more dangerous but still readable.
+- Confirm victory/defeat panel shows gold and remaining HP.
+- Confirm R restarts after victory, defeat, or fall death.
 
 ## Next development rule
 

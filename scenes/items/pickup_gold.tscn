@@ -18,6 +18,8 @@ shader_parameter/alpha_cutoff = 0.05
 radius = 14.0
 
 [node name="PickupGold" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
 script = ExtResource("1_pickup_item")
 pickup_type = "gold"
 amount = 3

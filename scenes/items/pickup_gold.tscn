@@ -1,11 +1,18 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/loot/pickup_item.gd" id="1_pickup_item"]
 [ext_resource type="Texture2D" path="res://assets/generated/item_sheet.png" id="2_item_sheet"]
+[ext_resource type="Shader" path="res://assets/shaders/remove_sheet_bg.gdshader" id="3_remove_bg"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gold_pickup"]
 atlas = ExtResource("2_item_sheet")
-region = Rect2(52, 634, 262, 172)
+region = Rect2(105, 620, 240, 190)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gold_bg"]
+shader = ExtResource("3_remove_bg")
+shader_parameter/brightness_cutoff = 0.82
+shader_parameter/saturation_cutoff = 0.18
+shader_parameter/alpha_cutoff = 0.05
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gold"]
 radius = 14.0
@@ -23,9 +30,10 @@ offset_left = -10.0
 offset_top = -10.0
 offset_right = 10.0
 offset_bottom = 10.0
-color = Color(1, 0.78, 0.18, 0.02)
+color = Color(1, 1, 1, 0)
 
 [node name="Art" type="Sprite2D" parent="Visual"]
+material = SubResource("ShaderMaterial_gold_bg")
 position = Vector2(10, 9)
 scale = Vector2(0.12, 0.12)
 texture = SubResource("AtlasTexture_gold_pickup")

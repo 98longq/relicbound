@@ -2,7 +2,11 @@ extends Node2D
 class_name LevelController
 
 ## Playable level controller.
-## Tracks enemy clear condition, displays objective/player/boss status, and supports restart after victory or defeat.
+## Tracks enemy clear condition, displays objective/player/boss status, opens the exit portal, and supports restart after victory or defeat.
+
+@export_group("Exit Portal")
+@export var exit_portal_position: Vector2 = Vector2(3150, 560)
+@export var exit_portal_size: Vector2 = Vector2(82, 118)
 
 @onready var hud: CanvasLayer = $HUD
 @onready var top_panel: ColorRect = $HUD/Panel
@@ -16,6 +20,10 @@ class_name LevelController
 @onready var result_label: Label = $HUD/ResultLabel
 
 var player_health_bar: ProgressBar
+var exit_portal_area: Area2D
+var exit_portal_visual: ColorRect
+var exit_portal_label: Label
+var is_exit_portal_open: bool = false
 var is_victory: bool = false
 var is_defeat: bool = false
 
@@ -25,6 +33,7 @@ func _ready() -> void:
 	if player_health_bar == null:
 		_create_player_health_bar()
 
+	_create_exit_portal()
 	_layout_hud()
 	_apply_health_bar_styles()
 	_set_result_visible(false)
@@ -36,6 +45,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	_update_player_info_label()
 	_update_boss_health_bar()
+	_update_exit_portal_visual(_delta)
 
 	if is_victory or is_defeat:
 		if Input.is_physical_key_pressed(KEY_R):
@@ -48,7 +58,8 @@ func _process(_delta: float) -> void:
 
 	var remaining_enemies := _count_alive_enemies()
 	if remaining_enemies <= 0:
-		_trigger_victory()
+		_open_exit_portal()
+		_update_portal_objective_label()
 	else:
 		_update_objective_label(remaining_enemies)
 
@@ -68,6 +79,45 @@ func _create_player_health_bar() -> void:
 	# Draw the bar behind the HP text label.
 	if player_info_label != null:
 		hud.move_child(player_health_bar, player_info_label.get_index())
+
+
+func _create_exit_portal() -> void:
+	exit_portal_area = Area2D.new()
+	exit_portal_area.name = "ExitPortal"
+	exit_portal_area.position = exit_portal_position
+	exit_portal_area.collision_layer = 0
+	exit_portal_area.collision_mask = 2
+	exit_portal_area.monitoring = false
+	exit_portal_area.monitorable = false
+	exit_portal_area.visible = false
+	add_child(exit_portal_area)
+
+	var collision_shape := CollisionShape2D.new()
+	var rectangle_shape := RectangleShape2D.new()
+	rectangle_shape.size = exit_portal_size
+	collision_shape.shape = rectangle_shape
+	exit_portal_area.add_child(collision_shape)
+
+	exit_portal_visual = ColorRect.new()
+	exit_portal_visual.name = "Visual"
+	exit_portal_visual.offset_left = -exit_portal_size.x * 0.5
+	exit_portal_visual.offset_top = -exit_portal_size.y
+	exit_portal_visual.offset_right = exit_portal_size.x * 0.5
+	exit_portal_visual.offset_bottom = 0.0
+	exit_portal_visual.color = Color(0.45, 0.1, 0.95, 0.66)
+	exit_portal_area.add_child(exit_portal_visual)
+
+	exit_portal_label = Label.new()
+	exit_portal_label.name = "Label"
+	exit_portal_label.offset_left = -95.0
+	exit_portal_label.offset_top = -152.0
+	exit_portal_label.offset_right = 95.0
+	exit_portal_label.offset_bottom = -122.0
+	exit_portal_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	exit_portal_label.text = "传送门"
+	exit_portal_area.add_child(exit_portal_label)
+
+	exit_portal_area.body_entered.connect(_on_exit_portal_body_entered)
 
 
 func _layout_hud() -> void:
@@ -231,11 +281,48 @@ func _get_player_gold() -> int:
 	return int(player.get("gold"))
 
 
+func _open_exit_portal() -> void:
+	if is_exit_portal_open:
+		return
+
+	is_exit_portal_open = true
+	if exit_portal_area != null:
+		exit_portal_area.visible = true
+		exit_portal_area.monitoring = true
+
+
+func _update_exit_portal_visual(delta: float) -> void:
+	if not is_exit_portal_open or exit_portal_visual == null:
+		return
+
+	var pulse := 0.56 + 0.18 * sin(Time.get_ticks_msec() / 130.0)
+	exit_portal_visual.color = Color(0.46, 0.10, 0.95, pulse)
+
+
+func _update_portal_objective_label() -> void:
+	if objective_label == null:
+		return
+
+	objective_label.text = "传送门已开启 | 进入传送门完成关卡 | 金币：%s" % _get_player_gold()
+
+
+func _on_exit_portal_body_entered(body: Node) -> void:
+	if not is_exit_portal_open or is_victory or is_defeat:
+		return
+
+	if not body.is_in_group("player"):
+		return
+
+	_trigger_victory()
+
+
 func _trigger_victory() -> void:
 	is_victory = true
+	if exit_portal_area != null:
+		exit_portal_area.monitoring = false
 	if objective_label != null:
-		objective_label.text = "胜利！所有敌人已击败 | 金币：%s | 按 R 重新开始。" % _get_player_gold()
-	_show_result("胜利", _build_result_summary("所有敌人已击败"))
+		objective_label.text = "胜利！已进入传送门 | 金币：%s | 按 R 重新开始。" % _get_player_gold()
+	_show_result("胜利", _build_result_summary("已进入传送门"))
 
 
 func _trigger_defeat() -> void:

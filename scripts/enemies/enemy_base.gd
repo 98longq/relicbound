@@ -3,7 +3,7 @@ class_name EnemyBase
 
 ## Enemy prototype.
 ## Covers health, receiving damage, gravity, hit feedback, death, simple chasing,
-## contact-range attacks, one loot drop scene, and simple attack motion feedback.
+## contact-range attacks, one loot drop scene, and visible attack motion feedback.
 
 @export_group("Stats")
 @export var max_health: int = 30
@@ -18,10 +18,11 @@ class_name EnemyBase
 
 @export_group("Combat")
 @export var attack_damage: int = 8
-@export var attack_cooldown: float = 0.75
+@export var attack_cooldown: float = 0.9
 @export var hit_flash_time: float = 0.08
-@export var attack_feedback_time: float = 0.18
-@export var attack_lunge_distance: float = 14.0
+@export var attack_feedback_time: float = 0.32
+@export var attack_lunge_distance: float = 28.0
+@export var attack_squash_scale: Vector2 = Vector2(1.28, 0.84)
 
 @export_group("Loot")
 @export var loot_scene: PackedScene
@@ -41,6 +42,7 @@ var _hit_flash_timer: float = 0.0
 var _attack_feedback_timer: float = 0.0
 var _base_art_modulate: Color = Color.WHITE
 var _base_art_position: Vector2 = Vector2.ZERO
+var _base_art_scale: Vector2 = Vector2.ONE
 
 
 func _ready() -> void:
@@ -55,6 +57,7 @@ func _ready() -> void:
 	if art_sprite != null:
 		_base_art_modulate = art_sprite.modulate
 		_base_art_position = art_sprite.position
+		_base_art_scale = art_sprite.scale
 
 	_update_health_label()
 
@@ -178,14 +181,15 @@ func _update_hit_flash(delta: float) -> void:
 		return
 
 	_hit_flash_timer -= delta
-	if _hit_flash_timer <= 0.0 and art_sprite != null:
+	if _hit_flash_timer <= 0.0 and art_sprite != null and _attack_feedback_timer <= 0.0:
 		art_sprite.modulate = _base_art_modulate
 
 
 func _start_attack_feedback() -> void:
 	_attack_feedback_timer = attack_feedback_time
-	if art_sprite != null and _hit_flash_timer <= 0.0:
-		art_sprite.modulate = Color(1.0, 0.82, 0.45, 1.0)
+	if art_sprite != null:
+		art_sprite.modulate = Color(1.0, 0.75, 0.32, 1.0)
+		art_sprite.scale = _base_art_scale * attack_squash_scale
 
 
 func _update_attack_feedback(delta: float) -> void:
@@ -194,15 +198,18 @@ func _update_attack_feedback(delta: float) -> void:
 
 	if _attack_feedback_timer <= 0.0:
 		art_sprite.position = _base_art_position
+		art_sprite.scale = _base_art_scale
 		return
 
 	_attack_feedback_timer -= delta
-	var normalized_time := clampf(_attack_feedback_timer / attack_feedback_time, 0.0, 1.0)
-	var lunge_factor := sin(normalized_time * PI)
-	art_sprite.position = _base_art_position + Vector2(attack_lunge_distance * float(facing_direction) * lunge_factor, 0.0)
+	var progress := 1.0 - clampf(_attack_feedback_timer / attack_feedback_time, 0.0, 1.0)
+	var lunge_factor := sin(progress * PI)
+	art_sprite.position = _base_art_position + Vector2(attack_lunge_distance * lunge_factor, -4.0 * lunge_factor)
+	art_sprite.scale = _base_art_scale.lerp(_base_art_scale * attack_squash_scale, lunge_factor)
 
 	if _attack_feedback_timer <= 0.0:
 		art_sprite.position = _base_art_position
+		art_sprite.scale = _base_art_scale
 		if _hit_flash_timer <= 0.0:
 			art_sprite.modulate = _base_art_modulate
 

@@ -5,8 +5,10 @@ class_name LevelController
 ## Tracks enemy clear condition, displays objective/player/boss status, and supports restart after victory or defeat.
 
 @onready var hud: CanvasLayer = $HUD
+@onready var top_panel: ColorRect = $HUD/Panel
 @onready var objective_label: Label = $HUD/ObjectiveLabel
 @onready var player_info_label: Label = $HUD/PlayerInfoLabel
+@onready var controls_label: Label = $HUD/ControlsLabel
 @onready var boss_panel: ColorRect = $HUD/BossPanel
 @onready var boss_label: Label = $HUD/BossLabel
 @onready var boss_health_bar: ProgressBar = $HUD/BossHealthBar
@@ -23,6 +25,7 @@ func _ready() -> void:
 	if player_health_bar == null:
 		_create_player_health_bar()
 
+	_layout_hud()
 	_apply_health_bar_styles()
 	_set_result_visible(false)
 	_update_objective_label()
@@ -56,15 +59,83 @@ func _create_player_health_bar() -> void:
 
 	player_health_bar = ProgressBar.new()
 	player_health_bar.name = "PlayerHealthBar"
-	player_health_bar.offset_left = 24.0
-	player_health_bar.offset_top = 120.0
-	player_health_bar.offset_right = 255.0
-	player_health_bar.offset_bottom = 138.0
 	player_health_bar.min_value = 0.0
 	player_health_bar.max_value = 100.0
 	player_health_bar.value = 100.0
 	player_health_bar.show_percentage = false
 	hud.add_child(player_health_bar)
+
+	# Draw the bar behind the HP text label.
+	if player_info_label != null:
+		hud.move_child(player_health_bar, player_info_label.get_index())
+
+
+func _layout_hud() -> void:
+	_layout_player_hud()
+	_layout_boss_hud()
+
+
+func _layout_player_hud() -> void:
+	if top_panel != null:
+		top_panel.offset_left = 14.0
+		top_panel.offset_top = 14.0
+		top_panel.offset_right = 1010.0
+		top_panel.offset_bottom = 118.0
+
+	if objective_label != null:
+		objective_label.offset_left = 24.0
+		objective_label.offset_top = 22.0
+		objective_label.offset_right = 850.0
+		objective_label.offset_bottom = 48.0
+
+	if player_health_bar != null:
+		player_health_bar.offset_left = 24.0
+		player_health_bar.offset_top = 54.0
+		player_health_bar.offset_right = 304.0
+		player_health_bar.offset_bottom = 78.0
+
+	if player_info_label != null:
+		player_info_label.offset_left = 24.0
+		player_info_label.offset_top = 54.0
+		player_info_label.offset_right = 304.0
+		player_info_label.offset_bottom = 78.0
+		player_info_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		player_info_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		player_info_label.add_theme_color_override("font_color", Color(1.0, 0.92, 0.88, 1.0))
+		player_info_label.add_theme_color_override("font_outline_color", Color(0.05, 0.0, 0.0, 1.0))
+		player_info_label.add_theme_constant_override("outline_size", 2)
+
+	if controls_label != null:
+		controls_label.offset_left = 24.0
+		controls_label.offset_top = 86.0
+		controls_label.offset_right = 990.0
+		controls_label.offset_bottom = 112.0
+
+
+func _layout_boss_hud() -> void:
+	var viewport_width := get_viewport_rect().size.x
+	var panel_width := 560.0
+	var panel_left := (viewport_width - panel_width) * 0.5
+	var panel_right := panel_left + panel_width
+
+	if boss_panel != null:
+		boss_panel.offset_left = panel_left
+		boss_panel.offset_top = 128.0
+		boss_panel.offset_right = panel_right
+		boss_panel.offset_bottom = 184.0
+
+	if boss_label != null:
+		boss_label.offset_left = panel_left + 16.0
+		boss_label.offset_top = 134.0
+		boss_label.offset_right = panel_right - 16.0
+		boss_label.offset_bottom = 158.0
+		boss_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+
+	if boss_health_bar != null:
+		boss_health_bar.offset_left = panel_left + 22.0
+		boss_health_bar.offset_top = 160.0
+		boss_health_bar.offset_right = panel_right - 22.0
+		boss_health_bar.offset_bottom = 178.0
 
 
 func _apply_health_bar_styles() -> void:
@@ -152,17 +223,25 @@ func _is_player_dead() -> bool:
 	return player.get("is_dead") == true
 
 
+func _get_player_gold() -> int:
+	var player := _get_player()
+	if player == null:
+		return 0
+
+	return int(player.get("gold"))
+
+
 func _trigger_victory() -> void:
 	is_victory = true
 	if objective_label != null:
-		objective_label.text = "胜利！所有敌人已击败，按 R 重新开始。"
+		objective_label.text = "胜利！所有敌人已击败 | 金币：%s | 按 R 重新开始。" % _get_player_gold()
 	_show_result("胜利", _build_result_summary("所有敌人已击败"))
 
 
 func _trigger_defeat() -> void:
 	is_defeat = true
 	if objective_label != null:
-		objective_label.text = "失败！按 R 重新开始。"
+		objective_label.text = "失败！金币：%s | 按 R 重新开始。" % _get_player_gold()
 	_show_result("失败", _build_result_summary("角色已倒下"))
 
 
@@ -171,13 +250,13 @@ func _update_objective_label(remaining_enemies: int = -1) -> void:
 		return
 
 	if _is_player_dead():
-		objective_label.text = "失败！按 R 重新开始。"
+		objective_label.text = "失败！金币：%s | 按 R 重新开始。" % _get_player_gold()
 		return
 
 	if remaining_enemies < 0:
 		remaining_enemies = _count_alive_enemies()
 
-	objective_label.text = "目标：击败全部敌人 | 剩余：%s" % remaining_enemies
+	objective_label.text = "目标：击败全部敌人 | 剩余：%s | 金币：%s" % [remaining_enemies, _get_player_gold()]
 
 
 func _update_player_info_label() -> void:
@@ -186,15 +265,14 @@ func _update_player_info_label() -> void:
 
 	var player := _get_player()
 	if player == null:
-		player_info_label.text = "生命：-- | 金币：--"
+		player_info_label.text = "生命：--/--"
 		if player_health_bar != null:
 			player_health_bar.value = 0.0
 		return
 
 	var current_health = player.get("current_health")
 	var max_health = player.get("max_health")
-	var gold = player.get("gold")
-	player_info_label.text = "生命：%s/%s | 金币：%s" % [current_health, max_health, gold]
+	player_info_label.text = "生命：%s/%s" % [current_health, max_health]
 
 	if player_health_bar != null:
 		player_health_bar.max_value = float(max_health)

@@ -6,14 +6,13 @@ Updated: 2026-06-25
 
 Playable Slice 001
 
-## Latest visual enrichment pass
+## Latest tuning pass
 
-- Added generated sheet background removal shader.
-- Replaced the visible attack debug box with player attack pose switching.
-- Added basic player sprite states for idle, run, jump, and attack.
-- Applied sheet background cleanup to player, common enemy, boss, gold pickup, and health pickup visuals.
-- Added a fixed HUD panel with objective, player HP, gold, and control hints.
-- Added first-pass environment art overlays for the ground and platforms.
+- Replaced horizontally stretched environment art with repeated tile sprites to reduce ground blur.
+- Increased player jump height so platforms are reachable.
+- Adjusted platform positions for better reachability.
+- Changed player and enemy collision layers so the player can pass through enemy bodies.
+- Kept attack detection on enemy bodies through the player AttackArea collision mask.
 
 ## Local test checklist
 
@@ -21,12 +20,12 @@ Playable Slice 001
 - Run the main scene.
 - Check movement with A/D or arrow keys.
 - Check jump with Space.
+- Confirm each platform can be reached.
+- Confirm the boss no longer physically blocks player movement.
 - Check attack with J or left mouse.
-- Confirm the yellow attack debug box is no longer visible.
-- Confirm character state art changes while moving, jumping, and attacking.
 - Check pickups.
 - Check the Chinese HUD text and fixed player status panel.
-- Check that generated sheet backgrounds are mostly removed from sprites.
+- Check that ground and platform art is less blurry than before.
 - Check R restart.
 
 ## Next development rule

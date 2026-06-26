@@ -6,13 +6,14 @@ Updated: 2026-06-25
 
 Playable Slice 001
 
-## Latest tuning pass
+## Latest combat tuning pass
 
-- Shortened the player melee reach again so attacks feel closer to weapon contact.
-- Kept enlarged enemy and boss hurtboxes so hits connect on visible body contact instead of requiring overlap.
-- Added player fall death when falling below the stage, preventing the player from getting stuck off-map.
-- Made enemy attack feedback more visible with a longer lunge, tint, squash, and small vertical motion.
-- Enemy hit feedback still affects only the sprite, not the ColorRect container.
+- Shortened the player melee reach slightly again.
+- Reduced common enemy and boss hurtbox volume a little so hits do not feel too generous.
+- Increased common enemy attack range and stop distance so enemies start attacks during player kiting instead of only chasing.
+- Increased boss attack range and stop distance so the boss starts attacking from a clearer distance.
+- Kept enemy attack lunge/tint feedback visible.
+- Player fall death remains enabled for off-map recovery.
 
 ## Collision layer plan
 
@@ -28,11 +29,12 @@ Playable Slice 001
 - Check movement with A/D or arrow keys.
 - Check jump with Space.
 - Check attack with J or left mouse.
-- Confirm melee reach is shorter but still hits on visible contact.
-- Confirm enemies show a clear attack lunge/tint when attacking.
-- Confirm falling off the right side or below the level causes death and allows R restart.
-- Confirm common enemies and boss no longer flash a white rectangle when hit.
-- Check pickups still work.
+- Confirm player melee reach is slightly shorter than the previous build.
+- Confirm hits still connect around visible enemy body contact.
+- Confirm common enemies begin attack motion more often when the player kites near them.
+- Confirm the boss begins attack motion from a readable distance.
+- Confirm falling below the level causes death and allows R restart.
+- Confirm pickups still work.
 - Check the Chinese HUD text and fixed player status panel.
 - Check R restart.
 

@@ -19,6 +19,8 @@ shader_parameter/alpha_cutoff = 0.05
 size = Vector2(40, 48)
 
 [node name="TestEnemy" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 1
 script = ExtResource("1_enemy_base")
 max_health = 30
 move_speed = 85.0

@@ -4,6 +4,7 @@ class_name LevelController
 ## Playable level controller.
 ## Tracks enemy clear condition, displays objective/player/boss status, and supports restart after victory or defeat.
 
+@onready var hud: CanvasLayer = $HUD
 @onready var objective_label: Label = $HUD/ObjectiveLabel
 @onready var player_info_label: Label = $HUD/PlayerInfoLabel
 @onready var boss_panel: ColorRect = $HUD/BossPanel
@@ -12,11 +13,16 @@ class_name LevelController
 @onready var result_panel: ColorRect = $HUD/ResultPanel
 @onready var result_label: Label = $HUD/ResultLabel
 
+var player_health_bar: ProgressBar
 var is_victory: bool = false
 var is_defeat: bool = false
 
 
 func _ready() -> void:
+	player_health_bar = get_node_or_null("HUD/PlayerHealthBar") as ProgressBar
+	if player_health_bar == null:
+		_create_player_health_bar()
+
 	_set_result_visible(false)
 	_update_objective_label()
 	_update_player_info_label()
@@ -41,6 +47,23 @@ func _process(_delta: float) -> void:
 		_trigger_victory()
 	else:
 		_update_objective_label(remaining_enemies)
+
+
+func _create_player_health_bar() -> void:
+	if hud == null:
+		return
+
+	player_health_bar = ProgressBar.new()
+	player_health_bar.name = "PlayerHealthBar"
+	player_health_bar.offset_left = 24.0
+	player_health_bar.offset_top = 76.0
+	player_health_bar.offset_right = 310.0
+	player_health_bar.offset_bottom = 94.0
+	player_health_bar.min_value = 0.0
+	player_health_bar.max_value = 100.0
+	player_health_bar.value = 100.0
+	player_health_bar.show_percentage = false
+	hud.add_child(player_health_bar)
 
 
 func _count_alive_enemies() -> int:
@@ -90,14 +113,14 @@ func _trigger_victory() -> void:
 	is_victory = true
 	if objective_label != null:
 		objective_label.text = "胜利！所有敌人已击败，按 R 重新开始。"
-	_show_result("胜利", "所有敌人已击败\n按 R 重新开始")
+	_show_result("胜利", _build_result_summary("所有敌人已击败"))
 
 
 func _trigger_defeat() -> void:
 	is_defeat = true
 	if objective_label != null:
 		objective_label.text = "失败！按 R 重新开始。"
-	_show_result("失败", "角色已倒下\n按 R 重新开始")
+	_show_result("失败", _build_result_summary("角色已倒下"))
 
 
 func _update_objective_label(remaining_enemies: int = -1) -> void:
@@ -121,12 +144,18 @@ func _update_player_info_label() -> void:
 	var player := _get_player()
 	if player == null:
 		player_info_label.text = "生命：-- | 金币：--"
+		if player_health_bar != null:
+			player_health_bar.value = 0.0
 		return
 
 	var current_health = player.get("current_health")
 	var max_health = player.get("max_health")
 	var gold = player.get("gold")
 	player_info_label.text = "生命：%s/%s | 金币：%s" % [current_health, max_health, gold]
+
+	if player_health_bar != null:
+		player_health_bar.max_value = float(max_health)
+		player_health_bar.value = float(current_health)
 
 
 func _update_boss_health_bar() -> void:
@@ -145,13 +174,30 @@ func _update_boss_health_bar() -> void:
 
 	var current_health = boss.get("current_health")
 	var max_health = boss.get("max_health")
+	var boss_name := "遗迹守卫"
+	if boss.get("is_phase_two") == true:
+		boss_name = "遗迹守卫·狂暴"
 
 	if boss_label != null:
-		boss_label.text = "遗迹守卫：%s/%s" % [current_health, max_health]
+		boss_label.text = "%s：%s/%s" % [boss_name, current_health, max_health]
 
 	if boss_health_bar != null:
 		boss_health_bar.max_value = float(max_health)
 		boss_health_bar.value = float(current_health)
+
+
+func _build_result_summary(reason: String) -> String:
+	var player := _get_player()
+	var gold := 0
+	var current_health := 0
+	var max_health := 0
+
+	if player != null:
+		gold = int(player.get("gold"))
+		current_health = int(player.get("current_health"))
+		max_health = int(player.get("max_health"))
+
+	return "%s\n金币：%s\n生命：%s/%s\n按 R 重新开始" % [reason, gold, current_health, max_health]
 
 
 func _show_result(title: String, body: String) -> void:

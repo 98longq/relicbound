@@ -3,7 +3,7 @@ class_name EnemyBase
 
 ## Enemy prototype.
 ## Covers health, receiving damage, gravity, hit feedback, death, simple chasing,
-## contact-range attacks, one loot drop scene, visible attack feedback, damage numbers, and boss phase changes.
+## contact-range attacks, visible attack feedback, damage numbers, boss phase changes, and varied loot drops.
 
 const DAMAGE_NUMBER_SCENE := preload("res://scenes/ui/damage_number.tscn")
 
@@ -37,6 +37,8 @@ const DAMAGE_NUMBER_SCENE := preload("res://scenes/ui/damage_number.tscn")
 @export_group("Loot")
 @export var loot_scene: PackedScene
 @export_range(0.0, 1.0, 0.05) var loot_drop_chance: float = 1.0
+@export var bonus_loot_scene: PackedScene
+@export_range(0.0, 1.0, 0.05) var bonus_loot_drop_chance: float = 0.0
 
 @onready var visual: ColorRect = $Visual
 @onready var art_sprite: Sprite2D = get_node_or_null("Visual/Art") as Sprite2D
@@ -186,18 +188,23 @@ func _try_enter_phase_two() -> void:
 
 
 func _drop_loot() -> void:
-	if loot_scene == null:
+	_spawn_loot_scene(loot_scene, loot_drop_chance, Vector2(0, -18))
+	_spawn_loot_scene(bonus_loot_scene, bonus_loot_drop_chance, Vector2(28, -18))
+
+
+func _spawn_loot_scene(scene: PackedScene, chance: float, offset: Vector2) -> void:
+	if scene == null:
 		return
 
-	if randf() > loot_drop_chance:
+	if randf() > chance:
 		return
 
-	var loot := loot_scene.instantiate()
+	var loot := scene.instantiate()
 	if loot == null:
 		return
 
 	get_parent().add_child(loot)
-	loot.global_position = global_position + Vector2(0, -18)
+	loot.global_position = global_position + offset
 
 
 func _spawn_damage_number(amount: int) -> void:

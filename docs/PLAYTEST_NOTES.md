@@ -6,14 +6,15 @@ Updated: 2026-06-25
 
 Playable Slice 001
 
-## Latest compact HUD tuning pass
+## Latest progression and loot pass
 
-- Recentered the boss HP panel and bar using the active viewport width instead of fixed left-biased coordinates.
-- Kept player and boss HP bars styled with red fills, dark backgrounds, borders, and rounded corners.
-- Moved the player HP text into the player HP bar itself.
-- Merged gold display into the first objective line so the HUD uses fewer separate text rows.
-- Left the controls hint below the compact player HP bar.
-- Boss phase-two HUD name, damage numbers, invulnerability frames, result panels, and R restart remain active.
+- Changed the win flow from instant victory after clearing enemies to an exit portal flow.
+- After all enemies are defeated, a purple exit portal opens near the end of the stage.
+- Entering the opened portal triggers victory and the existing result panel.
+- Added a large gold pickup worth 10 gold.
+- Common enemies still drop normal gold and now have a chance to drop a health pickup.
+- The boss now drops large gold and a health pickup when defeated.
+- Compact HUD, centered boss HP bar, player HP text inside the red HP bar, damage numbers, boss phase two, invulnerability frames, and R restart remain active.
 
 ## Collision layer plan
 
@@ -29,12 +30,13 @@ Playable Slice 001
 - Check movement with A/D or arrow keys.
 - Check jump with Space.
 - Check attack with J or left mouse.
-- Confirm the boss HP panel is centered at the top of the screen.
+- Confirm normal enemies can drop gold and sometimes health.
+- Confirm the boss drops large gold and health.
+- Confirm clearing all enemies opens the purple exit portal near the end of the stage.
+- Confirm touching the portal triggers victory.
+- Confirm the objective text changes to the portal objective after all enemies are defeated.
+- Confirm the boss HP panel remains centered at the top of the screen.
 - Confirm player HP text is inside the red HP bar.
-- Confirm gold is shown in the first objective line.
-- Confirm player HP bar updates when taking damage or healing.
-- Confirm boss HP bar updates during the boss fight.
-- Confirm boss enters phase two at low health and the HUD name changes to `遗迹守卫·狂暴`.
 - Confirm victory/defeat panel still shows gold and remaining HP.
 - Confirm R restarts after victory, defeat, or fall death.
 

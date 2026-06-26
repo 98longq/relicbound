@@ -23,7 +23,7 @@ shader_parameter/saturation_cutoff = 0.18
 shader_parameter/alpha_cutoff = 0.05
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
-size = Vector2(2200, 80)
+size = Vector2(3200, 80)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_platform_small"]
 size = Vector2(240, 32)
@@ -37,7 +37,7 @@ script = ExtResource("1_level_controller")
 [node name="Background" type="ColorRect" parent="."]
 offset_left = -256.0
 offset_top = -256.0
-offset_right = 2400.0
+offset_right = 3500.0
 offset_bottom = 900.0
 color = Color(0.06, 0.055, 0.075, 1)
 
@@ -86,8 +86,14 @@ position = Vector2(880, 592)
 [node name="EnemyC" parent="." instance=ExtResource("3_test_enemy")]
 position = Vector2(1190, 592)
 
+[node name="EnemyD" parent="." instance=ExtResource("3_test_enemy")]
+position = Vector2(1900, 592)
+
+[node name="EnemyE" parent="." instance=ExtResource("3_test_enemy")]
+position = Vector2(2250, 592)
+
 [node name="BossRuinGuardian" parent="." instance=ExtResource("4_boss_ruin_guardian")]
-position = Vector2(1640, 592)
+position = Vector2(2850, 592)
 
 [node name="PickupHealthA" parent="." instance=ExtResource("5_pickup_health")]
 position = Vector2(720, 580)
@@ -95,107 +101,152 @@ position = Vector2(720, 580)
 [node name="PickupHealthB" parent="." instance=ExtResource("5_pickup_health")]
 position = Vector2(1380, 580)
 
+[node name="PickupHealthC" parent="." instance=ExtResource("5_pickup_health")]
+position = Vector2(2450, 580)
+
 [node name="Ground" type="StaticBody2D" parent="."]
 collision_layer = 1
-position = Vector2(1100, 640)
+position = Vector2(1600, 640)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
 shape = SubResource("RectangleShape2D_ground")
 
 [node name="Visual" type="ColorRect" parent="Ground"]
-offset_left = -1100.0
+offset_left = -1600.0
 offset_top = -40.0
-offset_right = 1100.0
+offset_right = 1600.0
 offset_bottom = 40.0
 color = Color(0.18, 0.15, 0.2, 1)
 
 [node name="ArtTile01" type="Sprite2D" parent="Ground"]
 material = SubResource("ShaderMaterial_environment_bg")
-position = Vector2(-1050, -18)
+position = Vector2(-1575, -18)
 scale = Vector2(1, 0.7)
 texture = SubResource("AtlasTexture_ground_art")
 
 [node name="ArtTile02" type="Sprite2D" parent="Ground"]
 material = SubResource("ShaderMaterial_environment_bg")
-position = Vector2(-900, -18)
+position = Vector2(-1425, -18)
 scale = Vector2(1, 0.7)
 texture = SubResource("AtlasTexture_ground_art")
 
 [node name="ArtTile03" type="Sprite2D" parent="Ground"]
 material = SubResource("ShaderMaterial_environment_bg")
-position = Vector2(-750, -18)
+position = Vector2(-1275, -18)
 scale = Vector2(1, 0.7)
 texture = SubResource("AtlasTexture_ground_art")
 
 [node name="ArtTile04" type="Sprite2D" parent="Ground"]
 material = SubResource("ShaderMaterial_environment_bg")
-position = Vector2(-600, -18)
+position = Vector2(-1125, -18)
 scale = Vector2(1, 0.7)
 texture = SubResource("AtlasTexture_ground_art")
 
 [node name="ArtTile05" type="Sprite2D" parent="Ground"]
 material = SubResource("ShaderMaterial_environment_bg")
-position = Vector2(-450, -18)
+position = Vector2(-975, -18)
 scale = Vector2(1, 0.7)
 texture = SubResource("AtlasTexture_ground_art")
 
 [node name="ArtTile06" type="Sprite2D" parent="Ground"]
 material = SubResource("ShaderMaterial_environment_bg")
-position = Vector2(-300, -18)
+position = Vector2(-825, -18)
 scale = Vector2(1, 0.7)
 texture = SubResource("AtlasTexture_ground_art")
 
 [node name="ArtTile07" type="Sprite2D" parent="Ground"]
 material = SubResource("ShaderMaterial_environment_bg")
-position = Vector2(-150, -18)
+position = Vector2(-675, -18)
 scale = Vector2(1, 0.7)
 texture = SubResource("AtlasTexture_ground_art")
 
 [node name="ArtTile08" type="Sprite2D" parent="Ground"]
 material = SubResource("ShaderMaterial_environment_bg")
-position = Vector2(0, -18)
+position = Vector2(-525, -18)
 scale = Vector2(1, 0.7)
 texture = SubResource("AtlasTexture_ground_art")
 
 [node name="ArtTile09" type="Sprite2D" parent="Ground"]
 material = SubResource("ShaderMaterial_environment_bg")
-position = Vector2(150, -18)
+position = Vector2(-375, -18)
 scale = Vector2(1, 0.7)
 texture = SubResource("AtlasTexture_ground_art")
 
 [node name="ArtTile10" type="Sprite2D" parent="Ground"]
 material = SubResource("ShaderMaterial_environment_bg")
-position = Vector2(300, -18)
+position = Vector2(-225, -18)
 scale = Vector2(1, 0.7)
 texture = SubResource("AtlasTexture_ground_art")
 
 [node name="ArtTile11" type="Sprite2D" parent="Ground"]
 material = SubResource("ShaderMaterial_environment_bg")
-position = Vector2(450, -18)
+position = Vector2(-75, -18)
 scale = Vector2(1, 0.7)
 texture = SubResource("AtlasTexture_ground_art")
 
 [node name="ArtTile12" type="Sprite2D" parent="Ground"]
 material = SubResource("ShaderMaterial_environment_bg")
-position = Vector2(600, -18)
+position = Vector2(75, -18)
 scale = Vector2(1, 0.7)
 texture = SubResource("AtlasTexture_ground_art")
 
 [node name="ArtTile13" type="Sprite2D" parent="Ground"]
 material = SubResource("ShaderMaterial_environment_bg")
-position = Vector2(750, -18)
+position = Vector2(225, -18)
 scale = Vector2(1, 0.7)
 texture = SubResource("AtlasTexture_ground_art")
 
 [node name="ArtTile14" type="Sprite2D" parent="Ground"]
 material = SubResource("ShaderMaterial_environment_bg")
-position = Vector2(900, -18)
+position = Vector2(375, -18)
 scale = Vector2(1, 0.7)
 texture = SubResource("AtlasTexture_ground_art")
 
 [node name="ArtTile15" type="Sprite2D" parent="Ground"]
 material = SubResource("ShaderMaterial_environment_bg")
-position = Vector2(1050, -18)
+position = Vector2(525, -18)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile16" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(675, -18)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile17" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(825, -18)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile18" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(975, -18)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile19" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(1125, -18)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile20" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(1275, -18)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile21" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(1425, -18)
+scale = Vector2(1, 0.7)
+texture = SubResource("AtlasTexture_ground_art")
+
+[node name="ArtTile22" type="Sprite2D" parent="Ground"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(1575, -18)
 scale = Vector2(1, 0.7)
 texture = SubResource("AtlasTexture_ground_art")
 
@@ -278,6 +329,64 @@ scale = Vector2(1, 0.42)
 texture = SubResource("AtlasTexture_platform_art")
 
 [node name="ArtRight" type="Sprite2D" parent="PlatformC"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(75, -4)
+scale = Vector2(1, 0.42)
+texture = SubResource("AtlasTexture_platform_art")
+
+[node name="PlatformD" type="StaticBody2D" parent="."]
+collision_layer = 8
+position = Vector2(1900, 455)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformD"]
+shape = SubResource("RectangleShape2D_platform_large")
+
+[node name="Visual" type="ColorRect" parent="PlatformD"]
+offset_left = -180.0
+offset_top = -16.0
+offset_right = 180.0
+offset_bottom = 16.0
+color = Color(0.24, 0.19, 0.28, 1)
+
+[node name="ArtLeft" type="Sprite2D" parent="PlatformD"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(-120, -4)
+scale = Vector2(1, 0.42)
+texture = SubResource("AtlasTexture_platform_art")
+
+[node name="ArtCenter" type="Sprite2D" parent="PlatformD"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(0, -4)
+scale = Vector2(1, 0.42)
+texture = SubResource("AtlasTexture_platform_art")
+
+[node name="ArtRight" type="Sprite2D" parent="PlatformD"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(120, -4)
+scale = Vector2(1, 0.42)
+texture = SubResource("AtlasTexture_platform_art")
+
+[node name="PlatformE" type="StaticBody2D" parent="."]
+collision_layer = 8
+position = Vector2(2470, 430)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformE"]
+shape = SubResource("RectangleShape2D_platform_small")
+
+[node name="Visual" type="ColorRect" parent="PlatformE"]
+offset_left = -120.0
+offset_top = -16.0
+offset_right = 120.0
+offset_bottom = 16.0
+color = Color(0.24, 0.19, 0.28, 1)
+
+[node name="ArtLeft" type="Sprite2D" parent="PlatformE"]
+material = SubResource("ShaderMaterial_environment_bg")
+position = Vector2(-75, -4)
+scale = Vector2(1, 0.42)
+texture = SubResource("AtlasTexture_platform_art")
+
+[node name="ArtRight" type="Sprite2D" parent="PlatformE"]
 material = SubResource("ShaderMaterial_environment_bg")
 position = Vector2(75, -4)
 scale = Vector2(1, 0.42)

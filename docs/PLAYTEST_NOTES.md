@@ -6,14 +6,13 @@ Updated: 2026-06-25
 
 Playable Slice 001
 
-## Latest enrichment pass
+## Latest tuning pass
 
-- Slightly shortened the player melee reach while keeping the attack area forward and readable.
-- Increased common enemy and boss hurtbox volume so hits feel like they connect on visible body contact.
-- Added enemy attack motion feedback: enemies now briefly lunge and tint when they attack.
-- Expanded the test level to a longer stage with more ground, more platform sections, two additional common enemies, and one extra health pickup.
-- Moved the boss farther to the right so the level has a clearer end encounter.
-- Extended the player camera right limit to support the longer map.
+- Shortened the player melee reach again so attacks feel closer to weapon contact.
+- Kept enlarged enemy and boss hurtboxes so hits connect on visible body contact instead of requiring overlap.
+- Added player fall death when falling below the stage, preventing the player from getting stuck off-map.
+- Made enemy attack feedback more visible with a longer lunge, tint, squash, and small vertical motion.
+- Enemy hit feedback still affects only the sprite, not the ColorRect container.
 
 ## Collision layer plan
 
@@ -28,13 +27,11 @@ Playable Slice 001
 - Run the main scene.
 - Check movement with A/D or arrow keys.
 - Check jump with Space.
-- Confirm each platform can be reached and stood on.
-- Confirm the player cannot push the boss or common enemies.
 - Check attack with J or left mouse.
-- Confirm melee hits feel like they connect on visible enemy contact.
+- Confirm melee reach is shorter but still hits on visible contact.
+- Confirm enemies show a clear attack lunge/tint when attacking.
+- Confirm falling off the right side or below the level causes death and allows R restart.
 - Confirm common enemies and boss no longer flash a white rectangle when hit.
-- Confirm enemies show a visible attack lunge when attacking.
-- Confirm the longer map scrolls correctly to the right.
 - Check pickups still work.
 - Check the Chinese HUD text and fixed player status panel.
 - Check R restart.

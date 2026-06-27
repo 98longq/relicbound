@@ -1,0 +1,259 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scripts/systems/level_controller.gd" id="1_level_controller"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/test_enemy.tscn" id="3_test_enemy"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/ranged_enemy.tscn" id="4_ranged_enemy"]
+[ext_resource type="PackedScene" path="res://scenes/traps/spike_trap.tscn" id="5_spike_trap"]
+[ext_resource type="PackedScene" path="res://scenes/items/pickup_health.tscn" id="6_pickup_health"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(3040, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform_small"]
+size = Vector2(260, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform_large"]
+size = Vector2(420, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(42, 240)
+
+[node name="MineLevel" type="Node2D"]
+script = ExtResource("1_level_controller")
+exit_portal_position = Vector2(2920, 560)
+exit_portal_size = Vector2(92, 128)
+
+[node name="Background" type="ColorRect" parent="."]
+offset_left = -256.0
+offset_top = -256.0
+offset_right = 3400.0
+offset_bottom = 900.0
+color = Color(0.025, 0.026, 0.038, 1)
+
+[node name="CaveGlowA" type="ColorRect" parent="."]
+offset_left = 350.0
+offset_top = 160.0
+offset_right = 900.0
+offset_bottom = 620.0
+color = Color(0.04, 0.12, 0.16, 0.38)
+
+[node name="CaveGlowB" type="ColorRect" parent="."]
+offset_left = 1750.0
+offset_top = 130.0
+offset_right = 2450.0
+offset_bottom = 650.0
+color = Color(0.12, 0.055, 0.15, 0.32)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="ColorRect" parent="HUD"]
+offset_left = 14.0
+offset_top = 14.0
+offset_right = 1010.0
+offset_bottom = 118.0
+color = Color(0.02, 0.018, 0.026, 0.62)
+
+[node name="ObjectiveLabel" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 22.0
+offset_right = 760.0
+offset_bottom = 52.0
+text = "目标：穿越幽暗矿道"
+
+[node name="PlayerInfoLabel" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 52.0
+offset_right = 760.0
+offset_bottom = 82.0
+text = "生命：100/100"
+
+[node name="ControlsLabel" type="Label" parent="HUD"]
+offset_left = 24.0
+offset_top = 82.0
+offset_right = 990.0
+offset_bottom = 112.0
+text = "第二关试玩：躲避尖刺，处理远程敌人，清怪后进入传送门"
+
+[node name="BossPanel" type="ColorRect" parent="HUD"]
+offset_left = 360.0
+offset_top = 128.0
+offset_right = 920.0
+offset_bottom = 184.0
+color = Color(0.08, 0.035, 0.045, 0.72)
+
+[node name="BossLabel" type="Label" parent="HUD"]
+offset_left = 376.0
+offset_top = 134.0
+offset_right = 904.0
+offset_bottom = 158.0
+horizontal_alignment = 1
+text = "无 Boss"
+
+[node name="BossHealthBar" type="ProgressBar" parent="HUD"]
+offset_left = 382.0
+offset_top = 160.0
+offset_right = 898.0
+offset_bottom = 178.0
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="ResultPanel" type="ColorRect" parent="HUD"]
+visible = false
+offset_left = 275.0
+offset_top = 225.0
+offset_right = 745.0
+offset_bottom = 385.0
+color = Color(0.015, 0.012, 0.018, 0.84)
+
+[node name="ResultLabel" type="Label" parent="HUD"]
+visible = false
+offset_left = 300.0
+offset_top = 250.0
+offset_right = 720.0
+offset_bottom = 360.0
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "胜利\n按 R 重新开始"
+
+[node name="PlayerSpawn" type="Marker2D" parent="."]
+position = Vector2(150, 520)
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(150, 520)
+
+[node name="EnemyA" parent="." instance=ExtResource("3_test_enemy")]
+position = Vector2(620, 592)
+
+[node name="RangedEnemyA" parent="." instance=ExtResource("4_ranged_enemy")]
+position = Vector2(1120, 592)
+
+[node name="EnemyB" parent="." instance=ExtResource("3_test_enemy")]
+position = Vector2(1580, 592)
+
+[node name="RangedEnemyB" parent="." instance=ExtResource("4_ranged_enemy")]
+position = Vector2(2140, 592)
+
+[node name="EnemyC" parent="." instance=ExtResource("3_test_enemy")]
+position = Vector2(2500, 592)
+
+[node name="PickupHealthA" parent="." instance=ExtResource("6_pickup_health")]
+position = Vector2(860, 580)
+
+[node name="PickupHealthB" parent="." instance=ExtResource("6_pickup_health")]
+position = Vector2(1960, 580)
+
+[node name="SpikeTrapA" parent="." instance=ExtResource("5_spike_trap")]
+position = Vector2(760, 628)
+
+[node name="SpikeTrapB" parent="." instance=ExtResource("5_spike_trap")]
+position = Vector2(1380, 628)
+
+[node name="SpikeTrapC" parent="." instance=ExtResource("5_spike_trap")]
+position = Vector2(2300, 628)
+
+[node name="Ground" type="StaticBody2D" parent="."]
+collision_layer = 1
+position = Vector2(1520, 640)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("RectangleShape2D_ground")
+
+[node name="Visual" type="ColorRect" parent="Ground"]
+offset_left = -1520.0
+offset_top = -40.0
+offset_right = 1520.0
+offset_bottom = 40.0
+color = Color(0.105, 0.095, 0.12, 1)
+
+[node name="RockBand" type="ColorRect" parent="Ground"]
+offset_left = -1520.0
+offset_top = -40.0
+offset_right = 1520.0
+offset_bottom = -20.0
+color = Color(0.16, 0.15, 0.18, 1)
+
+[node name="PlatformA" type="StaticBody2D" parent="."]
+collision_layer = 8
+position = Vector2(520, 455)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformA"]
+shape = SubResource("RectangleShape2D_platform_small")
+
+[node name="Visual" type="ColorRect" parent="PlatformA"]
+offset_left = -130.0
+offset_top = -16.0
+offset_right = 130.0
+offset_bottom = 16.0
+color = Color(0.16, 0.135, 0.18, 1)
+
+[node name="PlatformB" type="StaticBody2D" parent="."]
+collision_layer = 8
+position = Vector2(1110, 415)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformB"]
+shape = SubResource("RectangleShape2D_platform_large")
+
+[node name="Visual" type="ColorRect" parent="PlatformB"]
+offset_left = -210.0
+offset_top = -16.0
+offset_right = 210.0
+offset_bottom = 16.0
+color = Color(0.16, 0.135, 0.18, 1)
+
+[node name="PlatformC" type="StaticBody2D" parent="."]
+collision_layer = 8
+position = Vector2(1740, 455)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformC"]
+shape = SubResource("RectangleShape2D_platform_small")
+
+[node name="Visual" type="ColorRect" parent="PlatformC"]
+offset_left = -130.0
+offset_top = -16.0
+offset_right = 130.0
+offset_bottom = 16.0
+color = Color(0.16, 0.135, 0.18, 1)
+
+[node name="PlatformD" type="StaticBody2D" parent="."]
+collision_layer = 8
+position = Vector2(2380, 420)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformD"]
+shape = SubResource("RectangleShape2D_platform_large")
+
+[node name="Visual" type="ColorRect" parent="PlatformD"]
+offset_left = -210.0
+offset_top = -16.0
+offset_right = 210.0
+offset_bottom = 16.0
+color = Color(0.16, 0.135, 0.18, 1)
+
+[node name="RockColumnA" type="StaticBody2D" parent="."]
+collision_layer = 1
+position = Vector2(1010, 520)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RockColumnA"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Visual" type="ColorRect" parent="RockColumnA"]
+offset_left = -21.0
+offset_top = -120.0
+offset_right = 21.0
+offset_bottom = 120.0
+color = Color(0.12, 0.105, 0.14, 1)
+
+[node name="RockColumnB" type="StaticBody2D" parent="."]
+collision_layer = 1
+position = Vector2(2050, 520)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RockColumnB"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Visual" type="ColorRect" parent="RockColumnB"]
+offset_left = -21.0
+offset_top = -120.0
+offset_right = 21.0
+offset_bottom = 120.0
+color = Color(0.12, 0.105, 0.14, 1)

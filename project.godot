@@ -17,7 +17,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 config/name="Relicbound"
 config/description="2D side-scrolling action roguelite about monster fighting, loot drops, and relic builds."
 config/version="0.0.1"
-run/main_scene="res://scenes/levels/test_level.tscn"
+run/main_scene="res://scenes/ui/main_menu.tscn"
 config/features=PackedStringArray("4.7")
 config/icon="res://icon.svg"
 

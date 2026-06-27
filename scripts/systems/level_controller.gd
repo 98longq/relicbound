@@ -20,20 +20,32 @@ class_name LevelController
 @onready var result_label: Label = $HUD/ResultLabel
 
 var player_health_bar: ProgressBar
+var start_panel: ColorRect
+var start_label: Label
 var exit_portal_area: Area2D
-var exit_portal_visual: ColorRect
+var exit_portal_visual_root: Node2D
+var exit_portal_glow: Polygon2D
+var exit_portal_core: Polygon2D
+var exit_portal_ring: Line2D
+var exit_portal_inner_ring: Line2D
 var exit_portal_label: Label
+var exit_portal_runes: Array[Label] = []
+var exit_portal_particles: Array[ColorRect] = []
+var is_game_started: bool = false
 var is_exit_portal_open: bool = false
 var is_victory: bool = false
 var is_defeat: bool = false
 
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
 	player_health_bar = get_node_or_null("HUD/PlayerHealthBar") as ProgressBar
 	if player_health_bar == null:
 		_create_player_health_bar()
 
 	_create_exit_portal()
+	_create_start_menu()
 	_layout_hud()
 	_apply_health_bar_styles()
 	_set_result_visible(false)
@@ -41,11 +53,19 @@ func _ready() -> void:
 	_update_player_info_label()
 	_update_boss_health_bar()
 
+	get_tree().paused = true
 
-func _process(_delta: float) -> void:
+
+func _process(delta: float) -> void:
+	if not is_game_started:
+		_update_start_menu_visual()
+		if _is_start_pressed():
+			_start_game()
+		return
+
 	_update_player_info_label()
 	_update_boss_health_bar()
-	_update_exit_portal_visual(_delta)
+	_update_exit_portal_visual(delta)
 
 	if is_victory or is_defeat:
 		if Input.is_physical_key_pressed(KEY_R):
@@ -81,6 +101,37 @@ func _create_player_health_bar() -> void:
 		hud.move_child(player_health_bar, player_info_label.get_index())
 
 
+func _create_start_menu() -> void:
+	if hud == null:
+		return
+
+	var viewport_size := get_viewport_rect().size
+
+	start_panel = ColorRect.new()
+	start_panel.name = "StartPanel"
+	start_panel.offset_left = 0.0
+	start_panel.offset_top = 0.0
+	start_panel.offset_right = viewport_size.x
+	start_panel.offset_bottom = viewport_size.y
+	start_panel.color = Color(0.018, 0.012, 0.028, 0.92)
+	hud.add_child(start_panel)
+
+	start_label = Label.new()
+	start_label.name = "StartLabel"
+	start_label.offset_left = viewport_size.x * 0.5 - 330.0
+	start_label.offset_top = viewport_size.y * 0.5 - 145.0
+	start_label.offset_right = viewport_size.x * 0.5 + 330.0
+	start_label.offset_bottom = viewport_size.y * 0.5 + 145.0
+	start_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	start_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	start_label.text = "遗物之契\n\n击败遗迹守卫，开启终点传送门\n收集金币与补给，完成本关试炼\n\n按 Enter 开始"
+	start_label.add_theme_font_size_override("font_size", 24)
+	start_label.add_theme_color_override("font_color", Color(1.0, 0.88, 0.68, 1.0))
+	start_label.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
+	start_label.add_theme_constant_override("outline_size", 3)
+	hud.add_child(start_label)
+
+
 func _create_exit_portal() -> void:
 	exit_portal_area = Area2D.new()
 	exit_portal_area.name = "ExitPortal"
@@ -98,26 +149,99 @@ func _create_exit_portal() -> void:
 	collision_shape.shape = rectangle_shape
 	exit_portal_area.add_child(collision_shape)
 
-	exit_portal_visual = ColorRect.new()
-	exit_portal_visual.name = "Visual"
-	exit_portal_visual.offset_left = -exit_portal_size.x * 0.5
-	exit_portal_visual.offset_top = -exit_portal_size.y
-	exit_portal_visual.offset_right = exit_portal_size.x * 0.5
-	exit_portal_visual.offset_bottom = 0.0
-	exit_portal_visual.color = Color(0.45, 0.1, 0.95, 0.66)
-	exit_portal_area.add_child(exit_portal_visual)
+	exit_portal_visual_root = Node2D.new()
+	exit_portal_visual_root.name = "PortalVisual"
+	exit_portal_visual_root.position = Vector2(0.0, -exit_portal_size.y * 0.5)
+	exit_portal_area.add_child(exit_portal_visual_root)
+
+	exit_portal_glow = Polygon2D.new()
+	exit_portal_glow.name = "Glow"
+	exit_portal_glow.polygon = _make_ellipse_points(58.0, 82.0, 48)
+	exit_portal_glow.color = Color(0.55, 0.10, 1.0, 0.24)
+	exit_portal_visual_root.add_child(exit_portal_glow)
+
+	exit_portal_core = Polygon2D.new()
+	exit_portal_core.name = "Core"
+	exit_portal_core.polygon = _make_ellipse_points(32.0, 62.0, 48)
+	exit_portal_core.color = Color(0.35, 0.04, 0.92, 0.78)
+	exit_portal_visual_root.add_child(exit_portal_core)
+
+	exit_portal_ring = _create_portal_ring("OuterRing", 42.0, 72.0, 5.0, Color(0.92, 0.66, 1.0, 0.95))
+	exit_portal_visual_root.add_child(exit_portal_ring)
+
+	exit_portal_inner_ring = _create_portal_ring("InnerRing", 27.0, 55.0, 2.0, Color(0.52, 0.88, 1.0, 0.82))
+	exit_portal_visual_root.add_child(exit_portal_inner_ring)
+
+	_create_exit_portal_runes()
+	_create_exit_portal_particles()
 
 	exit_portal_label = Label.new()
 	exit_portal_label.name = "Label"
-	exit_portal_label.offset_left = -95.0
-	exit_portal_label.offset_top = -152.0
-	exit_portal_label.offset_right = 95.0
-	exit_portal_label.offset_bottom = -122.0
+	exit_portal_label.offset_left = -110.0
+	exit_portal_label.offset_top = -158.0
+	exit_portal_label.offset_right = 110.0
+	exit_portal_label.offset_bottom = -126.0
 	exit_portal_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	exit_portal_label.text = "传送门"
+	exit_portal_label.text = "传送门已开启"
+	exit_portal_label.add_theme_color_override("font_color", Color(0.94, 0.82, 1.0, 1.0))
+	exit_portal_label.add_theme_color_override("font_outline_color", Color(0.05, 0.0, 0.12, 1.0))
+	exit_portal_label.add_theme_constant_override("outline_size", 2)
 	exit_portal_area.add_child(exit_portal_label)
 
 	exit_portal_area.body_entered.connect(_on_exit_portal_body_entered)
+
+
+func _create_portal_ring(name: String, radius_x: float, radius_y: float, width: float, color: Color) -> Line2D:
+	var ring := Line2D.new()
+	ring.name = name
+	ring.points = _make_ellipse_points(radius_x, radius_y, 64)
+	ring.width = width
+	ring.closed = true
+	ring.default_color = color
+	return ring
+
+
+func _create_exit_portal_runes() -> void:
+	var rune_data := [
+		["◆", Vector2(0.0, -88.0)],
+		["◆", Vector2(0.0, 72.0)],
+		["✦", Vector2(-56.0, -18.0)],
+		["✦", Vector2(56.0, -18.0)]
+	]
+
+	for data in rune_data:
+		var rune := Label.new()
+		rune.text = data[0]
+		rune.position = data[1]
+		rune.size = Vector2(28.0, 28.0)
+		rune.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		rune.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		rune.add_theme_color_override("font_color", Color(0.95, 0.78, 1.0, 0.95))
+		rune.add_theme_color_override("font_outline_color", Color(0.10, 0.0, 0.18, 1.0))
+		rune.add_theme_constant_override("outline_size", 2)
+		exit_portal_visual_root.add_child(rune)
+		exit_portal_runes.append(rune)
+
+
+func _create_exit_portal_particles() -> void:
+	for index in range(10):
+		var particle := ColorRect.new()
+		particle.name = "Particle%s" % index
+		particle.offset_left = -2.0
+		particle.offset_top = -2.0
+		particle.offset_right = 2.0
+		particle.offset_bottom = 2.0
+		particle.color = Color(0.86, 0.64, 1.0, 0.70)
+		exit_portal_visual_root.add_child(particle)
+		exit_portal_particles.append(particle)
+
+
+func _make_ellipse_points(radius_x: float, radius_y: float, point_count: int) -> PackedVector2Array:
+	var points := PackedVector2Array()
+	for index in range(point_count):
+		var angle := (float(index) / float(point_count)) * PI * 2.0
+		points.append(Vector2(cos(angle) * radius_x, sin(angle) * radius_y))
+	return points
 
 
 func _layout_hud() -> void:
@@ -281,6 +405,27 @@ func _get_player_gold() -> int:
 	return int(player.get("gold"))
 
 
+func _is_start_pressed() -> bool:
+	return Input.is_key_pressed(KEY_ENTER) or Input.is_key_pressed(KEY_KP_ENTER)
+
+
+func _start_game() -> void:
+	is_game_started = true
+	get_tree().paused = false
+	if start_panel != null:
+		start_panel.visible = false
+	if start_label != null:
+		start_label.visible = false
+
+
+func _update_start_menu_visual() -> void:
+	if start_label == null:
+		return
+
+	var pulse := 0.82 + 0.18 * sin(Time.get_ticks_msec() / 320.0)
+	start_label.modulate = Color(1.0, 1.0, 1.0, pulse)
+
+
 func _open_exit_portal() -> void:
 	if is_exit_portal_open:
 		return
@@ -291,12 +436,40 @@ func _open_exit_portal() -> void:
 		exit_portal_area.monitoring = true
 
 
-func _update_exit_portal_visual(delta: float) -> void:
-	if not is_exit_portal_open or exit_portal_visual == null:
+func _update_exit_portal_visual(_delta: float) -> void:
+	if not is_exit_portal_open or exit_portal_visual_root == null:
 		return
 
-	var pulse := 0.56 + 0.18 * sin(Time.get_ticks_msec() / 130.0)
-	exit_portal_visual.color = Color(0.46, 0.10, 0.95, pulse)
+	var time := Time.get_ticks_msec() / 1000.0
+	var pulse := 0.92 + 0.08 * sin(time * 4.0)
+	exit_portal_visual_root.scale = Vector2(0.96 + 0.04 * pulse, 1.0 + 0.05 * sin(time * 3.2))
+
+	if exit_portal_glow != null:
+		exit_portal_glow.color = Color(0.62, 0.14, 1.0, 0.22 + 0.10 * pulse)
+	if exit_portal_core != null:
+		exit_portal_core.color = Color(0.31, 0.04, 0.92, 0.70 + 0.10 * pulse)
+	if exit_portal_ring != null:
+		exit_portal_ring.default_color = Color(0.98, 0.75, 1.0, 0.84 + 0.12 * pulse)
+		exit_portal_ring.rotation = sin(time * 1.8) * 0.035
+	if exit_portal_inner_ring != null:
+		exit_portal_inner_ring.default_color = Color(0.48, 0.88, 1.0, 0.72 + 0.16 * pulse)
+		exit_portal_inner_ring.rotation = -sin(time * 2.2) * 0.055
+
+	for index in range(exit_portal_particles.size()):
+		var particle := exit_portal_particles[index]
+		var angle := time * 1.15 + float(index) * PI * 2.0 / float(exit_portal_particles.size())
+		var radius_x := 48.0 + 8.0 * sin(time * 1.7 + float(index))
+		var radius_y := 70.0 + 6.0 * cos(time * 1.3 + float(index))
+		var particle_position := Vector2(cos(angle) * radius_x, sin(angle) * radius_y)
+		particle.offset_left = particle_position.x - 2.0
+		particle.offset_top = particle_position.y - 2.0
+		particle.offset_right = particle_position.x + 2.0
+		particle.offset_bottom = particle_position.y + 2.0
+		particle.color = Color(0.92, 0.72, 1.0, 0.42 + 0.26 * sin(time * 2.0 + float(index)))
+
+	for index in range(exit_portal_runes.size()):
+		var rune := exit_portal_runes[index]
+		rune.modulate = Color(1.0, 1.0, 1.0, 0.70 + 0.22 * sin(time * 2.5 + float(index)))
 
 
 func _update_portal_objective_label() -> void:

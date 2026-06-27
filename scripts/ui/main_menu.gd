@@ -2,7 +2,7 @@ extends Control
 class_name MainMenu
 
 const TEST_LEVEL_PATH := "res://scenes/levels/test_level.tscn"
-const NEXT_LEVEL_PLACEHOLDER_PATH := "res://scenes/levels/next_level_placeholder.tscn"
+const MINE_LEVEL_PATH := "res://scenes/levels/mine_level.tscn"
 
 @onready var start_button: Button = $MenuPanel/StartButton
 @onready var next_preview_button: Button = $MenuPanel/NextPreviewButton
@@ -18,7 +18,7 @@ func _ready() -> void:
 		start_button.grab_focus()
 
 	if next_preview_button != null:
-		next_preview_button.pressed.connect(_open_next_preview)
+		next_preview_button.pressed.connect(_open_mine_level)
 
 	if quit_button != null:
 		quit_button.pressed.connect(_quit_game)
@@ -37,8 +37,8 @@ func _start_game() -> void:
 	get_tree().change_scene_to_file(TEST_LEVEL_PATH)
 
 
-func _open_next_preview() -> void:
-	get_tree().change_scene_to_file(NEXT_LEVEL_PLACEHOLDER_PATH)
+func _open_mine_level() -> void:
+	get_tree().change_scene_to_file(MINE_LEVEL_PATH)
 
 
 func _quit_game() -> void:

@@ -6,15 +6,14 @@ Updated: 2026-06-25
 
 Playable Slice 001
 
-## Latest progression and loot pass
+## Latest menu and portal polish pass
 
-- Changed the win flow from instant victory after clearing enemies to an exit portal flow.
-- After all enemies are defeated, a purple exit portal opens near the end of the stage.
-- Entering the opened portal triggers victory and the existing result panel.
-- Added a large gold pickup worth 10 gold.
-- Common enemies still drop normal gold and now have a chance to drop a health pickup.
-- The boss now drops large gold and a health pickup when defeated.
-- Compact HUD, centered boss HP bar, player HP text inside the red HP bar, damage numbers, boss phase two, invulnerability frames, and R restart remain active.
+- Added a simple start menu overlay before the level begins.
+- The game now pauses on the start menu and begins after pressing Enter.
+- Improved the exit portal from a flat purple rectangle into a layered portal effect.
+- The portal now has an oval glow, inner core, outer and inner rings, rune marks, floating light particles, and pulsing animation.
+- The portal still opens only after all enemies are defeated and still triggers victory when the player enters it.
+- Existing richer loot drops, compact HUD, centered boss HP bar, player HP text inside the red HP bar, damage numbers, boss phase two, invulnerability frames, and R restart remain active.
 
 ## Collision layer plan
 
@@ -27,12 +26,15 @@ Playable Slice 001
 
 - Open the project with Godot 4.x.
 - Run the main scene.
+- Confirm the start menu appears and the game is paused before pressing Enter.
+- Confirm pressing Enter starts the level.
 - Check movement with A/D or arrow keys.
 - Check jump with Space.
 - Check attack with J or left mouse.
 - Confirm normal enemies can drop gold and sometimes health.
 - Confirm the boss drops large gold and health.
-- Confirm clearing all enemies opens the purple exit portal near the end of the stage.
+- Confirm clearing all enemies opens the improved purple portal near the end of the stage.
+- Confirm the portal is no longer just a purple rectangle.
 - Confirm touching the portal triggers victory.
 - Confirm the objective text changes to the portal objective after all enemies are defeated.
 - Confirm the boss HP panel remains centered at the top of the screen.

@@ -92,7 +92,7 @@ offset_left = 84.0
 offset_top = 92.0
 offset_right = 396.0
 offset_bottom = 136.0
-text = "下一关预览"
+text = "幽暗矿道试玩"
 
 [node name="QuitButton" type="Button" parent="MenuPanel"]
 layout_mode = 0
